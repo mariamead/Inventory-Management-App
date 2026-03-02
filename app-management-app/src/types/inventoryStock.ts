@@ -1,5 +1,6 @@
+
 export type InventoryStock = {
-    id: string;
+    id?: string;
     name: string;
     description: string;
     location: string;

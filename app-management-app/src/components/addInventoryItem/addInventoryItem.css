@@ -1,10 +1,10 @@
 .inventory-form {
-    max-width: 980px;
+    max-width: 1150px;
     width: 100%;
-    margin: 0 auto;
+    margin: 15px auto;
     border-radius: 10px;
     border: 2px solid  #127b7b;
-    padding: 5px;
+    padding: 15px;
     align-content: auto;
 
 }
@@ -12,30 +12,57 @@
 .title {
     text-align: center;
     color:  #2F4F4F;
-    margin: 5px;
+    margin-bottom: 10px;
 }
 
-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.0em;
-  padding: 5px;
-  margin-left: 20px;
-}
-
-label, input {
-  padding: 5px 0px 8px 0px;
-  display: flex;
-  font-weight: bold;
-  font-size: var(--general-font-size);
+.inventory-form form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  align-items: end;
 }
 
 .item-data {
-    width: 100%;
-    max-width: 150px;
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+}
 
+.item-data label {
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.item-data input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#item-description {
+  grid-column: 1 / span 2;     
+  min-height: 75px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #2F4F4F;
+  resize: vertical;
+}
+
+
+.button-cell {
+  grid-column: 2;
+  grid-row: 3;
+  justify-self: start;
+  align-self: end;
+}
+
+.submitButton {
+  padding: 5px;
+  grid-column: 2;
+}
+
+.error {
+    font-weight: bold;
+    color: darkred;
 }
 
 

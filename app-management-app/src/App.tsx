@@ -4,9 +4,11 @@ import "./components/lowstockalert/lowStockAlert.css"
 import LowStockAlerts from './components/lowstockalert/LowStockAlerts';
 import { InventoryList } from './components/pages/inventoryList';
 import { Route, Routes } from 'react-router-dom';
+
 import Layout from './common/Layout';
 import ProfilePage from './components/profilePage/profilePage';
 import NavInterface from './components/navInterface/navInterface';
+
 
 
 function App() {

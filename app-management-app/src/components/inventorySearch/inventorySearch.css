@@ -1,16 +1,16 @@
 /* Simple styling for component and table*/
 .inventory-search {
     font-family: "Fira Sans", Arial, sans-serif;
-   font-size: 1rem;
-   color: #2F4F4F;
-   background-color: #FFFFFF;
-   padding-top: 2rem;
+    font-size: 1rem;
+    color: #2F4F4F;
+    background-color: #FFFFFF;
+    padding-top: 1rem;
 }
 
 .inventory-search h2 {
-  font-family: "Montserrat", Arial, sans-serif;
-  font-size: 1.5rem;
-  color: #127b7b;
+    font-family: "Montserrat", Arial, sans-serif;
+    font-size: 1.5rem;
+    color: #127b7b;
 }
 
 .inventoryTable {
@@ -44,4 +44,18 @@
 input {
     font-size: var(--general-font-size);
     gap: 10px;
+}
+
+.toggleFormButton {
+    display: flex;
+    padding: 10px 10px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #2F4F4F;
+    margin: 10px 0;
+    margin-left: 20px;
+    cursor: pointer;
+}
+.toggleFormButton:hover {
+    background-color: #127b7b; 
 }

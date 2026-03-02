@@ -2,6 +2,7 @@ import "./lowStockAlert.css"
 import { useLowStock } from "../../hooks/useLowStock";
 
 
+
 function QuantityEditor({
   value,
   onChange
