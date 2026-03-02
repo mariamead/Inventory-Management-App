@@ -1,49 +1,45 @@
 import { useState } from "react";
 import type { InventoryItem } from "../../Inventory/inventoryData";
 import "./addInventoryItem.css"
+import { inventoryService } from "../../services/inventoryService";
 
 export function AddInventoryItemForm({
-    addInventoryItem
+    inventory,
+    setInventoryList
 }: {
-    addInventoryItem: (item: Omit<InventoryItem, "id">) => void
+    inventory: InventoryItem[];
+    setInventoryList: React.Dispatch<React.SetStateAction<InventoryItem[]>>;
 }) {
     const [name, setName] = useState<string>("");
     const [ category, setCategory ] = useState<string>("");
     const [ quantity, setQuantity ] = useState<number>(0);
     const [ price, setPrice ] = useState<number>(0);
     const [ lowStockThreshold, setLowThreshold] = useState<number>(0);
-    const [ error, setError ] = useState<string>("");
+    const [ error, setError ] = useState<string[]>([]);
 
     const formSubmit = (event:React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setError("");
+        setError([]);
 
-        if(!name || name.length < 3) {
-            setError("Name of item cannot be blank and must have more then 3 characters.");
+        const newItem = { 
+            name, 
+            category, 
+            quantity, 
+            price, 
+            lowStockThreshold 
+        };
+
+        const validation= inventoryService.validateItem(newItem);
+
+        if (validation.isValid) {
+            setError(validation.errors);
             return;
         }
 
-        if(!category || category.length < 3) {
-            setError("Must have a category and have more then 3 characters.");
-            return;
-        }
+        const updatedInventory = inventoryService.addItem(inventory, newItem);
 
-        if(!quantity || quantity <= 0) {
-            setError("Must have a quantity and be greater than 0");
-            return;
-        }
+        setInventoryList(updatedInventory);
 
-        if(!price || price <= 0) {
-            setError("Must have a price and be greater than 0");
-            return;
-        }
-
-        if(!lowStockThreshold) {
-            setError("Must set a low stock threshold.");
-            return;
-        }
-
-        addInventoryItem({ name, category, quantity, price, lowStockThreshold});
         setName("");
         setCategory("");
         setQuantity(0);

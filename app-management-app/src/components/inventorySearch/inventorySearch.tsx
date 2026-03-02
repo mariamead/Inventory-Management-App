@@ -1,33 +1,21 @@
+import type React from "react";
 import { useSearchFilter } from "../../hooks/useSearchFilter";
 import "./inventorySearch.css";
 
 import { AddInventoryItemForm } from "../addInventoryItem/addInventoryItem";
 import type { InventoryItem } from "../../Inventory/inventoryData";
-import type React from "react";
-
 
 // Function to filter inventory by text in a search field
 function InventorySearch({
-        inventory,
-        setInventoryList
-    }: 
-    {
-        inventory: InventoryItem[],
-        setInventoryList: React.Dispatch<React.SetStateAction<InventoryItem[]>>;
-    }) {
+    inventory,
+    setInventoryList
+}: {
+    inventory: InventoryItem[];
+    setInventoryList: React.Dispatch<React.SetStateAction<InventoryItem[]>>;
+}) {
+
     //Setting state to prepare for input to change state used a custom hook called useSearch filter
     const { search, setSearch, filteredText } = useSearchFilter(inventory, "name");
-    // Adding inventory item to bottom of list with last number + 1 for Id
-    // will need to be adjusted when database introduced
-    const addInventoryItem = (item: Omit<InventoryItem, "id">): void => {
-        setInventoryList((prev) => [
-            ...prev, 
-            {
-                ...item,
-                id: String(prev.length + 1)
-            }
-        ]);
-    }
 
     return(
         // Inventory section to show a table of inventory items
@@ -43,9 +31,9 @@ function InventorySearch({
                 />    
             </label>
             <AddInventoryItemForm 
-            addInventoryItem={addInventoryItem}
+                inventory={inventory}
+                setInventoryList={setInventoryList}
             />
-
 
             <table className="inventoryTable">
                 <thead>

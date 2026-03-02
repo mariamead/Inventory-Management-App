@@ -53,7 +53,7 @@ function LowStockAlerts() {
                       <QuantityEditor
                         value={item.quantity}
                         onChange={newQuantity => {
-                          updateQuantity(item, newQuantity);
+                        	updateQuantity(item, newQuantity);
                         }}
                       />
                     </td>
@@ -75,7 +75,5 @@ function LowStockAlerts() {
           )}
         </section>
     );
-
-  }
-
+}
 export default LowStockAlerts;

@@ -1,26 +1,12 @@
-import type { InventoryItem } from "../../Inventory/inventoryData";
 import  InventorySearch from "../inventorySearch/inventorySearch";
 
 
-export function InventoryList (
-    {
-        inventory,
-        setInventoryList
-        
-    }:
-    {
-        inventory: InventoryItem[],
-        setInventoryList: React.Dispatch<React.SetStateAction<InventoryItem[]>>
-    }
-) {
+export function InventoryList () {
 
     return(
         <>
         <main>
-            <InventorySearch
-                inventory={inventory}
-                setInventoryList={setInventoryList}
-            />
+            <InventorySearch />
         </main>
         </>
     )
