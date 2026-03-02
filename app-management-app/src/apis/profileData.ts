@@ -34,5 +34,47 @@ export const testProfiles: Profile[] = [
     email: 'alice.williams@example.com',
     phone: '(555) 345-6789',
     address: '321 Elm Street, Vancouver, BC V6B 1A1'
+  },
+  {
+    id: 'user-5',
+    name: 'Michael Brown',
+    email: 'michael.brown@example.com',
+    phone: '(555) 456-7890',
+    address: '654 Maple Drive, Calgary, AB T2P 1J9'
+  },
+  {
+    id: 'user-6',
+    name: 'Sarah Davis',
+    email: 'sarah.davis@example.com',
+    phone: '(555) 567-8901',
+    address: '987 Birch Lane, Ottawa, ON K1A 0A9'
+  },
+  {
+    id: 'user-7',
+    name: 'David Miller',
+    email: 'david.miller@example.com',
+    phone: '(555) 678-9012',
+    address: '147 Cedar Court, Halifax, NS B3H 4R2'
+  },
+  {
+    id: 'user-8',
+    name: 'Emma Wilson',
+    email: 'emma.wilson@example.com',
+    phone: '(555) 789-0123',
+    address: '258 Spruce Street, Edmonton, AB T5J 2B6'
+  },
+  {
+    id: 'user-9',
+    name: 'James Martinez',
+    email: 'james.martinez@example.com',
+    phone: '(555) 890-1234',
+    address: '369 Willow Way, Victoria, BC V8W 2Y2'
+  },
+  {
+    id: 'user-10',
+    name: 'Olivia Taylor',
+    email: 'olivia.taylor@example.com',
+    phone: '(555) 901-2345',
+    address: '741 Ash Boulevard, Saskatoon, SK S7N 0W8'
   }
 ];
