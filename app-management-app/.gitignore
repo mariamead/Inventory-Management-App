@@ -23,5 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
+# Prisma Generated Files
+backend/src/generated/prisma
+
 # Environment Variables
 *.env
