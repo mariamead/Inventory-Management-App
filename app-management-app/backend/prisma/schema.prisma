@@ -8,9 +8,51 @@ generator client {
   output   = "../src/generated/prisma"
 }
 
+model Location {
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String
+  city      String
+  province  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users     User[]
+  inventory Inventory[]
+}
+
 model User {
   id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  email     String   @unique
   name      String?
+  email     String   @unique
+  phone     String?
+  locationId Int
+  location  Location @relation(fields: [locationId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Inventory {
+  id           Int      @id @default(autoincrement())
+  name         String
+  description  String?
+  manufacturer String?
+  category     String?
+  quantity     Int
+  price        Float?
+  locationId   Int
+  location     Location @relation(fields: [locationId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  lowStockAlert LowStockAlert?
+}
+
+model LowStockAlert {
+  id                Int      @id @default(autoincrement())
+  lowStockThreshold Int
+  inventoryId       Int      @unique
+  inventory         Inventory @relation(fields: [inventoryId], references: [id])
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }

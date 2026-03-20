@@ -29,7 +29,7 @@ export const profileRepository = {
     // Generate new ID
     const maxId = profiles.length > 0 
       ? Math.max(...profiles.map(p => {
-          const numId = parseInt(p.id.replace('user-', ''));
+          const numId = parseInt((p.id || '').replace('user-', ''));
           return isNaN(numId) ? 0 : numId;
         })) 
       : 0;
