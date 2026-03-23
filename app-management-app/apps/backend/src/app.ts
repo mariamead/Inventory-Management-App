@@ -1,5 +1,5 @@
 import express, {Express} from "express";
-import dotenv from "dotenv";
+import dotenv from "dotenv/lib/main";
 
 dotenv.config();
 import morgan from "morgan";

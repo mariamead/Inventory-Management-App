@@ -1,7 +1,7 @@
 {
   // Use the root directory for configuration
   // any overriding configs defined here
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "target": "ES2020",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
