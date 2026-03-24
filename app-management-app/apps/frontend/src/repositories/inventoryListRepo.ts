@@ -1,5 +1,5 @@
-import type { InventoryStock } from "../types/inventoryStock";
-import {stockData } from "../apis/stockData";
+import type { FrontendInventoryStock as InventoryStock } from "@shared/types/frontend-InventoryStock";
+import { stockData } from "../apis/stockData";
 
 /**
  * A function to fetch all data from InventoryStock

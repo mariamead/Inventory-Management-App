@@ -1,5 +1,5 @@
 import type { Validation } from "../hooks/useFormInput";
-import type { InventoryStock } from "../types/inventoryStock";
+import type { FrontendInventoryStock  as InventoryStock} from "@shared/types/frontend-InventoryStock";
 import { addStockInventory } from "../repositories/inventoryListRepo";
 import { stockData } from "../apis/stockData";
 
@@ -59,6 +59,14 @@ export const validatePrice = (value: string | number): Validation => {
     return { isValid: true, error: "" };
 }
 
+export const validateLowStockThreshold = (value: string | number): Validation => {
+    const lowStockThreshold = Number(value);
+    if(isNaN(lowStockThreshold) || lowStockThreshold <= 3) {
+        return { isValid: false, error: "Low stock threshold must be 3 or greater."};
+    }
+    return { isValid: true, error: ""};
+}
+
 /**
  * Function to validate the stock item that will be added
  * @param newStockItem -The new item that will be validated
@@ -67,7 +75,15 @@ export const validatePrice = (value: string | number): Validation => {
 export function validateStock(
     newStockItem: InventoryStock
 ): string | null {
-    const { name, description, location, manufacturer, category, quantity, price } = newStockItem
+    const { 
+        name, 
+        description, 
+        location, 
+        manufacturer, 
+        category, 
+        quantity, 
+        price, 
+        lowStockThreshold } = newStockItem
 
     const nameCheck = validateName(name);
     if (!nameCheck.isValid) {
@@ -102,6 +118,11 @@ export function validateStock(
     const priceCheck = validatePrice(price);
     if (!priceCheck.isValid) {
         return priceCheck.error ?? "Invalid Price";
+    }
+
+    const lowStockThresholdCheck = validateLowStockThreshold(lowStockThreshold);
+    if(!lowStockThresholdCheck.isValid) {
+        return lowStockThresholdCheck.error ?? "Invalid low stock threshold";
     }
 
     return null;

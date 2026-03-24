@@ -16,6 +16,7 @@
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,
       "resolveJsonModule": true,
+      "baseUrl": ".",
 
       // adds the shared directory for compilation
       // note the @ path alias makes this type available with this path in child directories
