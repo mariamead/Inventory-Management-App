@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+/**import { Request, Response, NextFunction } from "express";
 import { successResponse, errorResponse } from "../models/responseModel";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
 import * as profileService from "../services/profileService";
@@ -65,4 +65,4 @@ export const getAllProfiles = async (
   } catch (error) {
     next(error);
   }
-};
+}; */
