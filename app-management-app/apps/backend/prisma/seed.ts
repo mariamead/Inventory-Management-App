@@ -2,8 +2,7 @@ import "dotenv/config";
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
-import { locationSeedData, productSeedData } from "./seedDataLocationsProducts";
-
+import { seedLocation, seedProduct } from "./seedLocationProduct"; 
 
 const connectionString = `${process.env.DATABASE_URL}`;
 const pool = new Pool({ connectionString });
@@ -11,31 +10,20 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  console.log("Seeding Locations...");
-  for(const location of locationSeedData) {
-    await prisma.location.upsert({
-      where: { name: location.name },
-      update: {},
-      create: location,
-    });
-  }
+    console.log("Start Seeding....");
+    // seed 1 Location
+    await seedLocation(prisma);
 
-  console.log("Seeding Products....");
-  for(const product of productSeedData) {
-    await prisma.product.upsert({
-      where: {
-        name_manufacturer: {
-          name: product.name,
-          manufacturer: product.manufacturer,
-        },
-      },
-      update: {},
-      create: product,
-    });
-  }
+    // seed 2 Product
+    await seedProduct(prisma);
 
-  
+    // seed 3 Users
+
+    // seed 4 Inventory
+
+    console.log("Seeding Complete....");
 };
+
 
 main()
   .then(async () => {
