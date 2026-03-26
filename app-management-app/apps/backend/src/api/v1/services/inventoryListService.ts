@@ -1,4 +1,5 @@
 import type { FrontendInventoryStock }from "@shared/types/frontend-InventoryStock";
+import prisma from "../../../generated/prisma/client";
 import { stockData } from "../../../data/stockData";
 
 /**
@@ -6,7 +7,16 @@ import { stockData } from "../../../data/stockData";
  * @returns -All items in stock data
  */
 export const getAllInventoryStock = async(): Promise<FrontendInventoryStock[]> => {
-    return structuredClone(stockData);
+    // nested read
+    const allStockData = await prisma.inventory.findMany({
+        include: {
+            product: true,
+            location: true
+        }
+    });
+
+    return;
+
 };
 
 /**
@@ -14,17 +24,12 @@ export const getAllInventoryStock = async(): Promise<FrontendInventoryStock[]> =
  * @param itemData - The data required to created a new inventory item
  * @returns - the new item created
  */
-export const createStockItem = async(
+export const createStockItem = async (
     itemData: FrontendInventoryStock
 ): Promise<FrontendInventoryStock> => {
-    try{
-        const newItem: FrontendInventoryStock = {
-            id: (stockData.length + 1).toString(),
-            ...itemData
-        };
-
-        stockData.push(newItem);
-        return structuredClone(newItem);
+    try {
+        const newItem = await prisma.inventory.create({
+            
     } catch (error: unknown) {
         throw error;
     }
