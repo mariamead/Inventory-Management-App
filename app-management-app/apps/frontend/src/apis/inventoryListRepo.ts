@@ -1,50 +1,56 @@
-import type { InventoryStock } from "../types/inventoryStock";
-import {stockData } from "./stockData";
+import type { FrontendInventoryStock as InventoryStock } from "@shared/types/frontend-InventoryStock";
+
+type InventoryStocksResponseJSON = { message: String, data: InventoryStock[] };
+type InventoryStockResponseJSON = { message: String, data: InventoryStock};
+
+// Base url for backend
+// Vite provides this value from the .env file rather than dotenv package
+const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
+const INVENTORY_ENDPOINT = "/inventory";
 
 /**
- * A function to fetch all data from InventoryStock
+ * A function to fetch all data from API
  * @returns - All data found in InventoryStock[]
  */
-export function fetchAllInventoryStock(): InventoryStock[] {
-    return structuredClone(stockData);
-}
-
-/**
- * A function to fetch inventory by its ID
- * @param stockId - The ID of the stock item
- * @returns - The found stock ID by its ID
- */
-export function getInventoryStockById(stockId: string): InventoryStock {
-    const foundStock = stockData.find((item: InventoryStock) => item.id === stockId);
-
-    if(!foundStock) {
-        throw new Error(`Failed to fetch stock item with ${stockId}`);
+export async function fetchAllInventoryStock(): Promise<InventoryStock[]> {
+    const inventoryResponse: Response = await fetch(
+        `${BASE_URL}${INVENTORY_ENDPOINT}`, {
+            credentials: "include"
+        }
+    );
+    if(!inventoryResponse.ok) {
+        throw new Error("Failed to fetch Inventory Stock.")
     }
 
-    return structuredClone(foundStock);
-}
+    const json: InventoryStocksResponseJSON = await inventoryResponse.json();
+    return json.data;
+};
+
 
 
 /**
- * Function to add a new stock item to a inventory list, only allowing data to be added if
- * the location, name and manufacturer are not already existing.
+ * Function to add a new stock item to a inventory list
  * @param newStock - The new item being added to the inventory list
  * @returns - The new stock item added
  */
-export async function addStockInventory(newStock: InventoryStock): Promise<InventoryStock>{
-    // Checks to see if the item matches name, location and manufacturer.
-    const exists = stockData.some((item: InventoryStock) => 
-        item.name === newStock.name &&
-        item.location === newStock.location && 
-        item.manufacturer === newStock.manufacturer)
+export async function addStockInventory(
+    newStock: InventoryStock
+): Promise<InventoryStock>{
+    const newInventoryResponse = await fetch(
+        `${BASE_URL}${INVENTORY_ENDPOINT}`,
+        {
+            method: "POST",
+            body: JSON.stringify({...newStock}),
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include"
+        }
+    )
 
-    if(exists) {
-        throw new Error(
-            `Item ${newStock.name} already exists in that ${newStock.location}.`
-        );
-    } 
-    stockData.push(newStock);
+    const json: InventoryStockResponseJSON = await newInventoryResponse.json();
+    return json.data;
     
-    return structuredClone(newStock);
-}
+};
+
 

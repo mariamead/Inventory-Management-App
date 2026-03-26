@@ -1,4 +1,4 @@
-import type { InventoryStock } from "../types/inventoryStock"
+import type { FrontendInventoryStock as InventoryStock } from "@shared/types/frontend-InventoryStock";
 
 export const stockData: InventoryStock[] = [
     {
@@ -9,7 +9,8 @@ export const stockData: InventoryStock[] = [
     manufacturer: "LogiTech",
     category: "Electronics",
     quantity: 150,
-    price: 24.99
+    price: 24.99,
+    lowStockThreshold: 20
   },
   {
     id: "2",
@@ -19,7 +20,8 @@ export const stockData: InventoryStock[] = [
     manufacturer: "KeyChron",
     category: "Electronics",
     quantity: 85,
-    price: 79.99
+    price: 79.99,
+    lowStockThreshold: 10
   },
   {
     id: "3",
@@ -29,7 +31,8 @@ export const stockData: InventoryStock[] = [
     manufacturer: "Samsung",
     category: "Electronics",
     quantity: 42,
-    price: 299.99
+    price: 299.99,
+    lowStockThreshold: 3
   },
   {
     id: "4",
@@ -39,7 +42,8 @@ export const stockData: InventoryStock[] = [
     manufacturer: "Herman Miller",
     category: "Furniture",
     quantity: 25,
-    price: 499.99
+    price: 499.99,
+    lowStockThreshold: 5
   },
   {
     id: "5",
@@ -49,7 +53,8 @@ export const stockData: InventoryStock[] = [
     manufacturer: "FlexiSpot",
     category: "Furniture",
     quantity: 18,
-    price: 399.99
+    price: 399.99,
+    lowStockThreshold: 3
   },
   {
     id: "6",
@@ -59,7 +64,8 @@ export const stockData: InventoryStock[] = [
     manufacturer: "Dell",
     category: "Accessories",
     quantity: 60,
-    price: 129.99
+    price: 129.99,
+    lowStockThreshold: 5
   },
   {
     id: "7",
@@ -69,7 +75,8 @@ export const stockData: InventoryStock[] = [
     manufacturer: "Seagate",
     category: "Storage",
     quantity: 75,
-    price: 89.99
+    price: 89.99,
+    lowStockThreshold: 10
   },
   {
     id: "8",
@@ -79,7 +86,8 @@ export const stockData: InventoryStock[] = [
     manufacturer: "TP-Link",
     category: "Networking",
     quantity: 40,
-    price: 149.99
+    price: 149.99,
+    lowStockThreshold: 5
   },
   {
     id: "9",
@@ -89,7 +97,8 @@ export const stockData: InventoryStock[] = [
     manufacturer: "HP",
     category: "Office Equipment",
     quantity: 22,
-    price: 199.99
+    price: 199.99,
+    lowStockThreshold: 3
   },
   {
     id: "10",
@@ -99,6 +108,7 @@ export const stockData: InventoryStock[] = [
     manufacturer: "Belkin",
     category: "Accessories",
     quantity: 200,
-    price: 19.99
+    price: 19.99,
+    lowStockThreshold: 30
   }
 ];

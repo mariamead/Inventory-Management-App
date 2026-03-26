@@ -2,20 +2,26 @@ import type React from "react";
 import { useSearchFilter } from "../../hooks/useSearchFilter";
 import "./inventorySearch.css";
 import { AddInventoryItemForm } from "../addInventoryItem/addInventoryItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import type { InventoryStock } from "../../types/inventoryStock";
+import type { FrontendInventoryStock as InventoryStock } from "@shared/types/frontend-InventoryStock";
 import { addInventoryStock } from "../../services/stockService";
-import { stockData } from "../../apis/stockData";
+import { fetchAllInventoryStock } from "../../repositories/inventoryListRepo";
 
 
 // Function to filter inventory by text in a search field
 function InventorySearch() {
-    const [stockList, setInventoryStock] = useState<InventoryStock[]>(stockData);
+    const [stockList, setInventoryStock] = useState<InventoryStock[]>([]);
     //Setting state to prepare for input to change state used a custom hook called useSearch filter
     const { search, setSearch, filteredText } = useSearchFilter(stockList, "name");
-
     const [showForm, setShowForm] = useState(false);
+
+    useEffect(() => {
+        const data = fetchAllInventoryStock(); 
+        setInventoryStock(data);
+    }, []);
+
+
     // Adding inventory item to bottom of list with last number + 1 for Id
     // will need to be adjusted when database introduced
     const addStockItem = async(
@@ -27,7 +33,7 @@ function InventorySearch() {
                
                 return result; 
             }
-
+            
             setInventoryStock(prev => [
                 ...prev.filter(
                     item => 
@@ -36,7 +42,7 @@ function InventorySearch() {
                         item.category !== result.category || item.quantity !== result.quantity ||
                         item.price !== result.price
                 ), {...result}
-            ]);
+            ]); 
             return result;
         } catch (error: unknown) {
             if(error instanceof Error) {
