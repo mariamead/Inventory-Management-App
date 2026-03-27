@@ -26,6 +26,7 @@ dist-ssr
 
 # Prisma Generated Files
 backend/src/generated/prisma
+app-management-app/apps/backend/src/generated/prisma
 
 # Environment Variables
 *.env

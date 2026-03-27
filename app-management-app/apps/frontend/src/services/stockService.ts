@@ -1,7 +1,7 @@
 import type { Validation } from "../hooks/useFormInput";
 import type { FrontendInventoryStock  as InventoryStock} from "@shared/types/frontend-InventoryStock";
-import { addStockInventory } from "../repositories/inventoryListRepo";
-import { stockData } from "../apis/stockData";
+import { addStockInventory } from "../apis/inventoryListRepo";
+
 
 export const validateName = (value: string | number): Validation => {
     const name = String(value); // convert to string
@@ -134,7 +134,6 @@ export async function addInventoryStock(
 ): Promise<InventoryStock | string> {
     const stockItemWithId: InventoryStock = {
         ...stockItem,
-        id: String(stockData.length + 1) // simple sequential ID
     };
     const error = validateStock(stockItemWithId);
 

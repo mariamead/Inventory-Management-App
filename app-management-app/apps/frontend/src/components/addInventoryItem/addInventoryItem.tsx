@@ -59,8 +59,8 @@ export function AddInventoryItemForm({
                 category: category.inputValue as string, 
                 quantity: Number(quantity.inputValue), 
                 price: Number(price.inputValue),
-                lowStockThreshold: Number(lowStockThreshold.inputValue),
-        
+                lowStockThreshold: Number(lowStockThreshold.inputValue)
+         
         });
 
 

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import type { FrontendInventoryStock as InventoryStock } from "@shared/types/frontend-InventoryStock";
 import { addInventoryStock } from "../../services/stockService";
-import { fetchAllInventoryStock } from "../../repositories/inventoryListRepo";
+import { fetchAllInventoryStock } from "../../apis/inventoryListRepo";
 
 
 // Function to filter inventory by text in a search field
@@ -17,8 +17,15 @@ function InventorySearch() {
     const [showForm, setShowForm] = useState(false);
 
     useEffect(() => {
-        const data = fetchAllInventoryStock(); 
-        setInventoryStock(data);
+        const fetchStockData = async () => {
+            try {
+                const data = await fetchAllInventoryStock(); 
+                setInventoryStock(data);
+            } catch (error) {
+                console.error("Error fetching inventory stock data:", error);
+            }
+        };
+        fetchStockData(); 
     }, []);
 
 
