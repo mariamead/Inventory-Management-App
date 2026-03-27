@@ -33,14 +33,14 @@ export const productSeedData = [
     name: "Wireless Mouse",
     description: "Ergonomic wireless mouse with USB receiver",
     category: Category.ELECTRONICS, 
-    manufacturer: Manufacturer.LOGITECH, 
+    manufacturer: Manufacturer.LOGITEC, 
     price: 24.99,
   },
   {
     name: "Mechanical Keyboard",
     description: "RGB backlit mechanical keyboard",
     category: Category.ELECTRONICS,
-    manufacturer: Manufacturer.LOGITECH,
+    manufacturer: Manufacturer.LOGITEC,
     price: 79.99,
   },
   {
@@ -68,7 +68,8 @@ export const productSeedData = [
     name: "Anti-Aging Night Cream",
     description: "Hydrating cream with retinol and hyaluronic acid",
     category: Category.BEAUTY,
-    manufacturer: Manufacturer.LOREAL, 
+    manufacturer: Manufacturer.LOREAL,
+    price: 49.99 
   },
   {
     name: "Frozen French Fries",
