@@ -10,49 +10,77 @@ generator client {
 
 model Location {
   id        Int      @id @default(autoincrement())
-  name      String
+  name      String   @unique
   address   String
   city      String
   province  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  users     User[]
-  inventory Inventory[]
+ 
+  users        User[]
+  inventory  Inventory[]
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  name      String?
-  email     String   @unique
-  phone     String?
-  locationId Int
-  location  Location @relation(fields: [locationId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Inventory {
-  id           Int      @id @default(autoincrement())
+model Product {
+  id           Int          @id @default(autoincrement())
   name         String
-  description  String?
-  manufacturer String?
-  category     String?
-  quantity     Int
-  price        Float?
-  locationId   Int
-  location     Location @relation(fields: [locationId], references: [id])
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  description  String
+  category     Category
+  manufacturer Manufacturer
+  price        Decimal      @db.Decimal(10, 2)
 
-  lowStockAlert LowStockAlert?
+  inventory  Inventory[]
+ 
+  @@unique([name, manufacturer])
 }
+ 
+model Inventory {
+  id         Int      @id @default(autoincrement())
+  productId  Int
+  locationId Int
+  quantity   Int
+  threshold  Int
 
-model LowStockAlert {
-  id                Int      @id @default(autoincrement())
-  lowStockThreshold Int
-  inventoryId       Int      @unique
-  inventory         Inventory @relation(fields: [inventoryId], references: [id])
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  product    Product  @relation(fields: [productId], references: [id])
+  location   Location @relation(fields: [locationId], references: [id])
+ 
+  @@unique([productId, locationId])
+}
+ 
+model User {
+  id         Int      @id @default(autoincrement())
+  name       String?
+  email      String   @unique
+  phone      String?
+  locationId Int
+  location   Location @relation(fields: [locationId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+ 
+enum Category {
+  FOOD
+  ELECTRONICS
+  HEALTH
+  BEAUTY
+}
+ 
+enum Manufacturer {
+  LG
+  SAMSUNG
+  LOGITEC
+  HP
+  SONY
+  PANASONIC
+  BAYER
+  JOHNSON_AND_JOHNSON
+  ORGANIKA
+  PROCTER_AND_GAMBLE
+  LOREAL
+  KRAFT
+  MAPLE_LEAF
+  MCCAIN
+  PC
+  DOLE
+  DEL_MONTE
 }
