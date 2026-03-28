@@ -22,10 +22,10 @@ export const lowStockPutSchema: ObjectSchema = Joi.object({
         "number.integer": "Quantity must be a whole number",
         "number.min": "Quantity must be 0 or greater"
     }),
-    threshold: Joi.number().integer().min(0).required().messages({
-        "any.required": "Threshold is required",
-        "number.base": "Threshold must be a number",
-        "number.integer": "Threshold must be a whole number",
-        "number.min": "Threshold must be 0 or greater"
+    lowStockThreshold: Joi.number().integer().min(0).required().messages({
+        "any.required": "Low stock threshold is required",
+        "number.base": "Low stock threshold must be a number",
+        "number.integer": "Low stock threshold must be a whole number",
+        "number.min": "Low stock threshold must be 0 or greater"
     })
 });
