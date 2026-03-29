@@ -1,4 +1,4 @@
-import { Category, Manufacturer } from "../src/generated/prisma/client";
+import { Category, Manufacturer } from "@prisma/client"
 
 export const locationSeedData = [
   {

@@ -1,0 +1,1 @@
+export type { FrontendProfile } from './frontend-profile';

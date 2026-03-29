@@ -8,6 +8,7 @@ dotenv.config();
 import corsOptions from "../config/cors";
 import morgan from "morgan";
 import inventoryListRoutes from "../src/api/v1/routes/inventoryListRoutes";
+import profileRoutes from "./api/v1/routes/profileRoutes";
 import errorHandler from "./api/v1/middleware/errorHandler";
 import lowStockRoutes from "./api/v1/routes/lowStockRoutes";
 
@@ -27,10 +28,12 @@ app.get("/",  (_req, res) => {
 });
 
 app.use("/api/v1", inventoryListRoutes);
+app.use('/api/v1/user-profile', profileRoutes);
 app.use("/api/v1/low-stock", lowStockRoutes);
 
 
 app.use(errorHandler);
+
 
 
 export default app;

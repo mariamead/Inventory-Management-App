@@ -1,4 +1,4 @@
-/**import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import { successResponse, errorResponse } from "../models/responseModel";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
 import * as profileService from "../services/profileService";
@@ -9,7 +9,7 @@ export const getProfile = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const id = req.params.id;
+    const id = req.params.id as string;
     const user = await profileService.getProfileById(id);
 
     if (!user) {
@@ -30,7 +30,7 @@ export const updateProfile = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const id = req.params.id;
+    const id = req.params.id as string;
     const { name, email, phone, address } = req.body;
 
     if (!name || !email || !phone || !address) {
@@ -53,7 +53,7 @@ export const updateProfile = async (
 };
 
 export const getAllProfiles = async (
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
@@ -65,4 +65,4 @@ export const getAllProfiles = async (
   } catch (error) {
     next(error);
   }
-}; */
+};
