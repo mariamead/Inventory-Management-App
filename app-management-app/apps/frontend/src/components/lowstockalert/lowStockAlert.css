@@ -28,3 +28,9 @@
   background-color: #2F4F4F;
   color: #FFFFFF;
 }
+
+
+.low-stock-alerts td:nth-child(3) input[type="number"] {
+  float: right;       /* pushes the input to the right of the cell */
+  text-align: right;  /* optional: numbers inside are right-aligned */
+}

@@ -16,6 +16,7 @@ function QuantityEditor({
       min={0}
       value={value}
       onChange={e => onChange(Number(e.target.value))}
+      aria-label="Quantity"
     />
   );
 }
@@ -51,12 +52,15 @@ function LowStockAlerts() {
                     <td>{item.category}</td>
                   
                     <td>
-                      <QuantityEditor
-                        value={item.quantity}
-                        onChange={newQuantity => {
-                        	updateQuantity(item, newQuantity);
-                        }}
-                      />
+                      <label className="sr-only">
+                        Quantity for {item.name}
+                        <QuantityEditor
+                          value={item.quantity}
+                          onChange={newQuantity => {
+                            updateQuantity(item, newQuantity);
+                          }}
+                        />
+                      </label>
                     </td>
                     <td>
                       {item.quantity === 0 ? "Out of Stock" : "Low Stock"}

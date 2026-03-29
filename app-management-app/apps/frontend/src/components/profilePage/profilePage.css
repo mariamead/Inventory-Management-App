@@ -42,6 +42,11 @@
   padding: 1.5rem;
 }
 
+.profile-card,
+.profile-card-body {
+  color:  #2F4F4F;; /* dark text for readability */
+}
+
 .text-center {
   text-align: center;
 }
@@ -79,7 +84,7 @@
 }
 
 .profile-value {
-  color: #6c757d;
+  color: #2F4F4F;
   flex: 1;
   text-align: left;
 }
