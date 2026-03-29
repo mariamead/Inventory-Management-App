@@ -1,8 +1,10 @@
 import type { FrontendInventoryStock }from "@shared/types/frontend-InventoryStock";
 import { prisma } from "../../../../prisma/prismaClient";
-import { Category, Manufacturer } from "../../../../src/generated/prisma/enums";
-import { AppError } from "../errors/errors";
+import { Category, Manufacturer } from "@prisma/client";
+
 import { HTTP_STATUS } from "src/constants/httpConstants";
+import { AppError } from "../errors/errors";
+
 
 /**
  * A function to return all items in stockData
@@ -35,8 +37,7 @@ export const getAllInventoryStock = async(): Promise<FrontendInventoryStock[]> =
 
         //Formatting the data to match the oject for backend and frontend as incoming data will be nested.
         const allData: FrontendInventoryStock[] = allStockData.flatMap(product => 
-            product.inventory.map((inventory: { quantity: number; threshold: number; location:{name: string}
-            }) => ({
+            product.inventory.map(inventory => ({
                 id: product.id.toString(),
                 name: product.name,
                 description: product.description,
@@ -47,7 +48,7 @@ export const getAllInventoryStock = async(): Promise<FrontendInventoryStock[]> =
                 lowStockThreshold: inventory.threshold,
                 location: inventory.location.name
             }))
-        )
+        );
 
         return allData;
     } catch (error: unknown) {
