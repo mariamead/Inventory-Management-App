@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import * as ProfileService from "../services/profileService";
 import type {ProfileData } from "../services/profileService";
 
+// extracting error message
+const getErrorMessage = (err: unknown) : string =>
+    err instanceof Error ? err.message : 'Unknown error';
+
 
 /**
  * This is a custom hook that will handle editing a user profile.
@@ -24,7 +28,6 @@ import type {ProfileData } from "../services/profileService";
  * }
  */
 export function useUserProfileEdit(userId: string) {
-    //Default values before setting state.
     const defaultProfile: ProfileData = {
         name: "",
         email: "",
@@ -35,44 +38,37 @@ export function useUserProfileEdit(userId: string) {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [data, setData] = useState<ProfileData>(defaultProfile);
     const [error, setError] = useState<string | null>(null);
+    const [tempData, setTempData] = useState<ProfileData>(defaultProfile);
 
-    //temp data storage
-    const [ tempData, setTempData] = useState<ProfileData>(defaultProfile);
-
-    //Fetch profile on mount / userId Change
     useEffect(() => {
         let ignore = false;
 
         async function loadProfile() {
             try {
                 const profile = await ProfileService.fetchProfileById(userId);
-                if(!ignore) {
+                if (!ignore) {
                     setData(profile);
                     setTempData(profile);
                     setError(null);
                 }
             } catch (err) {
                 if (!ignore) {
-                    setError(`Failed to load profile: ${err instanceof Error ? err.message : 'Unknown error'}`);
+                    setError(`Failed to load profile: ${getErrorMessage(err)}`);
                     console.error('Failed to load profile:', err);
                 }
             }
         }
         loadProfile();
         return () => { ignore = true };
-        }, [userId]);
-    
-    
+    }, [userId]);
+
     const handleEdit = () => {
-        if(data) {
-            setTempData(data);
-        }
+        if (data) setTempData(data);
         setIsEditing(true);
     };
 
     const handleSave = async () => {
-        if(!tempData) return;
-
+        if (!tempData) return;
         try {
             const updatedData = await ProfileService.updateUserProfile(userId, tempData);
             setData(updatedData);
@@ -81,20 +77,18 @@ export function useUserProfileEdit(userId: string) {
             setError(null);
             console.log('Profile saved successfully');
         } catch (err) {
-            setError(`Failed to save profile: ${err instanceof Error ? err.message : 'Unknown error'}`);
+            setError(`Failed to save profile: ${getErrorMessage(err)}`);
             console.error('Failed to save profile:', err);
         }
     };
 
     const handleCancel = () => {
-        if(data) {
-            setTempData(data);
-        }
+        if (data) setTempData(data);
         setIsEditing(false);
     };
 
     const onChange = (field: string, value: string) => {
-        setTempData(prev => ({...prev, [field]: value}));
+        setTempData(prev => ({ ...prev, [field]: value }));
     };
 
     return {
@@ -106,5 +100,5 @@ export function useUserProfileEdit(userId: string) {
         handleSave,
         handleCancel,
         onChange
-    }
+    };
 }
