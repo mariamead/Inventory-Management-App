@@ -28,7 +28,7 @@ app.get("/",  (_req, res) => {
 });
 
 app.use("/api/v1", inventoryListRoutes);
-app.use('/api/user-profile', profileRoutes);
+app.use('/api/v1/user-profile', profileRoutes);
 app.use("/api/v1/low-stock", lowStockRoutes);
 
 

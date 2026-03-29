@@ -23,7 +23,7 @@ const config: runtime.GetPrismaClientConfig = {
       "value": "prisma-client"
     },
     "output": {
-      "value": "C:\\Users\\e2cli\\Documents\\Lindsay - RRC\\Term 5 - wi2026\\COMP-4002\\full-stack-group-project\\Inventory-Management-App\\app-management-app\\apps\\backend\\src\\generated\\prisma",
+      "value": "C:\\Users\\maria\\Full-Stack-Development\\Inventory-Management-App\\app-management-app\\apps\\backend\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -37,7 +37,7 @@ const config: runtime.GetPrismaClientConfig = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\e2cli\\Documents\\Lindsay - RRC\\Term 5 - wi2026\\COMP-4002\\full-stack-group-project\\Inventory-Management-App\\app-management-app\\apps\\backend\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\maria\\Full-Stack-Development\\Inventory-Management-App\\app-management-app\\apps\\backend\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativePath": "../../../prisma",
@@ -47,6 +47,7 @@ const config: runtime.GetPrismaClientConfig = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
