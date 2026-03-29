@@ -1,6 +1,6 @@
-import { profileRepository } from "../apis/profileRepo";
-//This is just a mock service to ensure I don't have Vercel failures and should be updated with the real service file.
-export type Profile = {
+import { getProfile, updateProfile } from '../apis/profileRepo';
+
+export type ProfileData = {
     id?: string;
     name: string;
     email: string;
@@ -8,14 +8,12 @@ export type Profile = {
     address: string;
 }
 
-
-export async function fetchProfileById(userId: string): Promise<Profile> {
-    const profile = profileRepository.getById(userId);
-    if (!profile) throw new Error("Profile not found");
+export async function fetchProfileById(userId: string): Promise<ProfileData> {
+    const profile = await getProfile(userId);
     return profile;
 }
-export async function updateUserProfile(userId: string, data: Profile): Promise<Profile> {
-    const updated = profileRepository.update(userId, data);
-    if (!updated) throw new Error("Failed to update profile");
-    return updated;
+
+export async function updateUserProfile(userId: string, data: ProfileData): Promise<ProfileData> {
+    const updatedProfile = await updateProfile(userId, data);
+    return updatedProfile;
 }

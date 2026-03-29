@@ -10,7 +10,7 @@ export default function ProfilePage() {
     handleSave,
     handleCancel,
     onChange
-  } = useUserProfileEdit('user-1');
+  } = useUserProfileEdit('1');
 
   return (
     <section className="profile-section">

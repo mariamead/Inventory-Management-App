@@ -4,6 +4,7 @@ import { seedLocation, seedProduct } from "./seedLocationProduct";
 import { seedInventory } from "./seedInventory";
 import { seedProfile } from "./seedProfile";
 
+
 const prisma = new PrismaClient();
 
 async function main() {
@@ -27,7 +28,6 @@ async function main() {
 main()
   .then(async () => {
     await prisma.$disconnect();
-  
   })
   .catch(async (e) => {
     console.error(e);

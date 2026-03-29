@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import * as ProfileService from "../services/profileService";
-import type {Profile } from "../services/profileService";
-import { profileRepository } from "../apis/profileRepo";
+import type { ProfileData } from "../services/profileService";
+import { FrontendProfile } from "@shared/types";
+
+// extracting error message
+const getErrorMessage = (err: unknown) : string =>
+    err instanceof Error ? err.message : 'Unknown error';
+
 
 /**
  * This is a custom hook that will handle editing a user profile.
@@ -16,7 +21,7 @@ import { profileRepository } from "../apis/profileRepo";
  * @returns -{
  *  isEditing: Is a boolean to check whether state is editing in edit mode. 
  *  data: The confirmed/saved version of the data.
- *  tempData: The "in-progress" draft data (bind this to your inputs).
+ *  tempData: The "in-progress" draft data
  *  handleEdit: Function to handle the data being edited sync temp data and current data.
  *  handleSave: Function that handles the saving of the new data.
  *  handCancel: Function that handles if the edit is canceled and discard temp data.
@@ -24,65 +29,72 @@ import { profileRepository } from "../apis/profileRepo";
  * }
  */
 export function useUserProfileEdit(userId: string) {
-    //Default values before setting state.
-    const defaultProfile = profileRepository.getById(userId) ?? { name: "", email: "", phone: "", address: "" };
+    const defaultProfile: FrontendProfile = { name: "", email: "", phone: "", address: "" };
     
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const [data, setData] = useState<Profile>(defaultProfile);
+    const [data, setData] = useState<ProfileData>(defaultProfile);
+    const [error, setError] = useState<string | null>(null);
+    const [tempData, setTempData] = useState<ProfileData>(defaultProfile);
 
-    //temp data storage
-    const [ tempData, setTempData] = useState<Profile>(defaultProfile);
-
-    //Fetch profile on mount / userId Change
     useEffect(() => {
         let ignore = false;
 
         async function loadProfile() {
-            const profile = await ProfileService.fetchProfileById(userId);
-            if(!ignore && profile) {
-                setData(profile);
-                setTempData(profile);
+            try {
+                const profile = await ProfileService.fetchProfileById(userId);
+                if (!ignore) {
+                    setData(profile);
+                    setTempData(profile);
+                    setError(null);
+                }
+            } catch (err) {
+                if (!ignore) {
+                    setError(`Failed to load profile: ${getErrorMessage(err)}`);
+                    console.error('Failed to load profile:', err);
+                }
             }
         }
         loadProfile();
         return () => { ignore = true };
-        }, [userId]);
-    
-    
+    }, [userId]);
+
     const handleEdit = () => {
-        if(data) {
-            setTempData(data);
-        }
+        if (data) setTempData(data);
         setIsEditing(true);
     };
 
     const handleSave = async () => {
-        if(!tempData) return;
-
-        const updatedData = await ProfileService.updateUserProfile(userId, tempData);
-        setData(updatedData);
-        setTempData(updatedData);
-        setIsEditing(false);
+        if (!tempData) return;
+        try {
+            const updatedData = await ProfileService.updateUserProfile(userId, tempData);
+            setData(updatedData);
+            setTempData(updatedData);
+            setIsEditing(false);
+            setError(null);
+            console.log('Profile saved successfully');
+        } catch (err) {
+            setError(`Failed to save profile: ${getErrorMessage(err)}`);
+            console.error('Failed to save profile:', err);
+        }
     };
 
     const handleCancel = () => {
-        if(data) {
-            setTempData(data);
-        }
+        if (data) setTempData(data);
         setIsEditing(false);
     };
 
     const onChange = (field: string, value: string) => {
-        setTempData(prev => ({...prev, [field]: value}));
+        setTempData(prev => ({ ...prev, [field]: value }));
     };
 
     return {
         isEditing,
         data,
         tempData,
+        error,
         handleEdit,
         handleSave,
         handleCancel,
         onChange
-    }
+    };
 }

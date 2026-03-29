@@ -26,6 +26,11 @@
   min-width: 500px;
 }
 
+.profile-card,
+.profile-card-body {
+  color:  #2F4F4F;; /* dark text for readability */
+}
+
 .profile-card {
   background-color: #FFFFFF;
   border-radius: 0.5rem;
