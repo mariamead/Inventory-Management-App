@@ -1,4 +1,4 @@
-import { PrismaClient } from "../src/generated/prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { inventorySeedData } from "./inventorySeedData";
 
 export async function seedInventory(prisma: PrismaClient) {

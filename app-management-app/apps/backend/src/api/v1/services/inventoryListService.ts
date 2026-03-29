@@ -1,5 +1,7 @@
 import type { FrontendInventoryStock }from "@shared/types/frontend-InventoryStock";
-import  {prisma}  from "../../../../prisma/prismaClient";
+
+import { prisma } from "../../../../prisma/prismaClient";
+
 import { Category, Manufacturer } from "@prisma/client";
 
 
