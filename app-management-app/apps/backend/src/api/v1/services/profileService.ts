@@ -1,5 +1,5 @@
 import type { FrontendProfile } from '@shared/types/frontend-profile';
-import { prisma } from "../../../../prisma/prismaClient";
+import  prisma  from "../../../../prisma/prismaClient";
 
 const profileSelect = {
     id: true,

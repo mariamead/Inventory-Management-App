@@ -1,5 +1,5 @@
 import type { FrontendInventoryStock } from "@shared/types/frontend-InventoryStock";
-import { prisma } from "../../../../prisma/prismaClient";
+import  prisma  from "../../../../prisma/prismaClient";
 import { AppError } from "../errors/errors";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
 

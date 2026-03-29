@@ -1,8 +1,8 @@
 import type { FrontendInventoryStock }from "@shared/types/frontend-InventoryStock";
-import { prisma } from "../../../../prisma/prismaClient";
+import  prisma  from "../../../../prisma/prismaClient";
 import { Category, Manufacturer } from "@prisma/client";
 
-import { HTTP_STATUS } from "src/constants/httpConstants";
+import { HTTP_STATUS } from "../../../constants/httpConstants";
 import { AppError } from "../errors/errors";
 
 
