@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import * as ProfileService from "../services/profileService";
-import type {ProfileData } from "../services/profileService";
-
+import type {Profile } from "../services/profileService";
+import { profileRepository } from "../apis/profileRepo";
 
 /**
  * This is a custom hook that will handle editing a user profile.
@@ -25,18 +25,13 @@ import type {ProfileData } from "../services/profileService";
  */
 export function useUserProfileEdit(userId: string) {
     //Default values before setting state.
-    const defaultProfile: ProfileData = {
-        name: "",
-        email: "",
-        phone: "",
-        address: ""
-    };
+    const defaultProfile = profileRepository.getById(userId) ?? { name: "", email: "", phone: "", address: "" };
     
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const [data, setData] = useState<ProfileData>(defaultProfile);
+    const [data, setData] = useState<Profile>(defaultProfile);
 
     //temp data storage
-    const [ tempData, setTempData] = useState<ProfileData>(defaultProfile);
+    const [ tempData, setTempData] = useState<Profile>(defaultProfile);
 
     //Fetch profile on mount / userId Change
     useEffect(() => {
@@ -44,7 +39,7 @@ export function useUserProfileEdit(userId: string) {
 
         async function loadProfile() {
             const profile = await ProfileService.fetchProfileById(userId);
-            if(!ignore) {
+            if(!ignore && profile) {
                 setData(profile);
                 setTempData(profile);
             }
