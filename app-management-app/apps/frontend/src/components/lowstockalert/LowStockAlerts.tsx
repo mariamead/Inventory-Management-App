@@ -64,7 +64,10 @@ function LowStockAlerts() {
 
                     <td>
                       <button
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => {
+                          if (item.id) {
+                            removeItem(item.id);
+                          }}}
                       > 
                         Remove
                       </button>
