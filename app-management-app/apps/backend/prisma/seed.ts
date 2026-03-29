@@ -1,9 +1,10 @@
 import "dotenv/config";
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../src/generated/prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { seedLocation, seedProduct } from "./seedLocationProduct"; 
 import { seedInventory } from "./seedInventory";
+import { seedProfile } from "./seedProfile";
 
 const connectionString = `${process.env.DATABASE_URL}`;
 const pool = new Pool({ connectionString });
@@ -19,6 +20,7 @@ async function main() {
     await seedProduct(prisma);
 
     // seed 3 Users
+    await seedProfile(prisma);
 
     // seed 4 Inventory
     await seedInventory(prisma);
