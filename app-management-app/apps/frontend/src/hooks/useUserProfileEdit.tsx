@@ -20,7 +20,7 @@ const getErrorMessage = (err: unknown) : string =>
  * @returns -{
  *  isEditing: Is a boolean to check whether state is editing in edit mode. 
  *  data: The confirmed/saved version of the data.
- *  tempData: The "in-progress" draft data (bind this to your inputs).
+ *  tempData: The "in-progress" draft data
  *  handleEdit: Function to handle the data being edited sync temp data and current data.
  *  handleSave: Function that handles the saving of the new data.
  *  handCancel: Function that handles if the edit is canceled and discard temp data.
