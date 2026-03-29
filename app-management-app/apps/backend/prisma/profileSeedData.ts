@@ -1,5 +1,3 @@
-import { User } from "../src/generated/prisma/client";
-
 export const profileData = [
     {
         name: "John Doe",
