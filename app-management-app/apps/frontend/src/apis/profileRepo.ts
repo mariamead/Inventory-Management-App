@@ -1,6 +1,6 @@
 import type { FrontendProfile } from "@shared/types/frontend-profile"
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const PROFILE_ENDPOINT = "api/v1/user-profile";
+const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
+const PROFILE_ENDPOINT = "/user-profile";
 
 type APIResponse<T> = { 
   status: string; 
