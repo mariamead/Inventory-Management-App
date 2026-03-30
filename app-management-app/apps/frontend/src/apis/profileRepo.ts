@@ -1,5 +1,6 @@
 import type { FrontendProfile } from "@shared/types/frontend-profile"
-const API_BASE_URL = import.meta.env.VITE_PROFILE_API_URL;
+const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
+const PROFILE_ENDPOINT = "/user-profile";
 
 type APIResponse<T> = { 
   status: string; 
@@ -104,7 +105,7 @@ async function apiFetch<T>(url: string, options?: RequestInit): Promise<T> {
  * @returns Array of profiles from database
  */
 export const getAllProfiles = async (): Promise<FrontendProfile[]> => {
-  const json = await apiFetch<APIResponse<FrontendProfile[]>>(`${API_BASE_URL}/user-profile`);
+  const json = await apiFetch<APIResponse<FrontendProfile[]>>(`${API_BASE_URL}${PROFILE_ENDPOINT}`);
   return json.data;
 };
 
@@ -114,7 +115,7 @@ export const getAllProfiles = async (): Promise<FrontendProfile[]> => {
  * @returns The profile data
  */
 export const getProfile = async (id: string): Promise<FrontendProfile> => {
-  const json = await apiFetch<APIResponse<FrontendProfile>>(`${API_BASE_URL}/user-profile/${id}`);
+  const json = await apiFetch<APIResponse<FrontendProfile>>(`${API_BASE_URL}${PROFILE_ENDPOINT}/${id}`);
   return json.data;
 };
 
@@ -129,7 +130,7 @@ export const updateProfile = async (
   updatedData: Partial<Omit<FrontendProfile, 'id'>>
 ): Promise<FrontendProfile> => {
   const json = await apiFetch<APIResponse<FrontendProfile>>(
-    `${API_BASE_URL}/user-profile/${id}`,
+    `${API_BASE_URL}${PROFILE_ENDPOINT}/${id}`,
     {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
