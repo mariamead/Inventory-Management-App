@@ -1,5 +1,5 @@
 import type { FrontendProfile } from "@shared/types/frontend-profile"
-const API_BASE_URL = import.meta.env.VITE_PROFILE_API_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 type APIResponse<T> = { 
   status: string; 
