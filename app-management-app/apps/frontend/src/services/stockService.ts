@@ -1,5 +1,5 @@
 import type { Validation } from "../hooks/useFormInput";
-import type { FrontendInventoryStock  as InventoryStock} from "@shared/types/frontend-InventoryStock";
+import { Category, Manufacturer, type FrontendInventoryStock  as InventoryStock} from "@shared/types/frontend-InventoryStock";
 import { addStockInventory } from "../apis/inventoryListRepo";
 
 
@@ -28,17 +28,15 @@ export const validateLocation = (value: string | number): Validation => {
 }
 
 export const validateManufacturer = (value: string | number): Validation => {
-    const manufacturer = String(value);
-    if (!manufacturer) {
-        return { isValid: false, error: "Manufacturer cannot be blank." };
+    if (!value || !Object.values(Manufacturer).includes(value as Manufacturer)) {
+        return { isValid: false, error: "A valid manufacturer must be selected." };
     }
     return { isValid: true, error: "" };
 }
 
 export const validateCategory = (value: string | number): Validation => {
-    const category = String(value);
-    if (category.length < 3) {
-        return { isValid: false, error: "Category must be at least 3 characters." };
+    if(!value || !Object.values(Category).includes(value as Category)) {
+        return { isValid: false, error: "A valid category must be selected." };
     }
     return { isValid: true, error: "" };
 }

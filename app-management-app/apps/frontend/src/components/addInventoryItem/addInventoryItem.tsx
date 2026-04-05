@@ -5,6 +5,8 @@ import {validateName, validateDescription,
         validateLocation, validateManufacturer, 
         validateCategory, validateQuantity, validatePrice,
         validateLowStockThreshold} from "../../services/stockService";
+import { Category, Manufacturer } from "@shared/types/frontend-InventoryStock";
+import { useState } from "react";
 
 export function AddInventoryItemForm({
     addInventoryStock,
@@ -12,6 +14,9 @@ export function AddInventoryItemForm({
     stockData: InventoryStock[],
     addInventoryStock: (item: Omit<InventoryStock, "id">) => Promise<string | InventoryStock | null>;
 }) {
+    const [ selectCategory, setSelectedCategory ] = useState("");
+    const [ selectManufacturer, setSelectedManufacturer ] = useState("");
+
     const name = useFormInput(validateName);
     const description = useFormInput(validateDescription);
     const location = useFormInput(validateLocation);
@@ -55,8 +60,8 @@ export function AddInventoryItemForm({
                 name: name.inputValue as string, 
                 description: description.inputValue as string, 
                 location: location.inputValue as string, 
-                manufacturer: manufacturer.inputValue as string, 
-                category: category.inputValue as string, 
+                manufacturer: manufacturer.inputValue as Manufacturer, 
+                category: category.inputValue as Category, 
                 quantity: Number(quantity.inputValue), 
                 price: Number(price.inputValue),
                 lowStockThreshold: Number(lowStockThreshold.inputValue)
@@ -91,23 +96,52 @@ export function AddInventoryItemForm({
 
                  <div className="item-data">
                     <label htmlFor="item-category">Category</label>
-                    <input
+                    <select
                         id="item-category"
-                        type="text"
-                        value={category.inputValue}
-                        onChange={category.onChange}
-                    />
+                        value={selectCategory}
+                        onChange={(e) => {
+                            setSelectedCategory(e.target.value)
+                            category.onChange(e);
+                        }}
+                    >
+                        <option value="">--Select a Category--</option>
+                        <option value={Category.FOOD}>FOOD</option>
+                        <option value={Category.ELECTRONICS}>ELECTRONICS</option>
+                        <option value={Category.HEALTH}>HEALTH</option>
+                        <option value={Category.BEAUTY}>BEAUTY</option>
+                    </select>
                     {category.error && <p className="error">{category.error}</p>}
                 </div>
 
                 <div className="item-data">
                     <label htmlFor="item-manufacturer">Manufacturer</label>
-                    <input
+                    <select
                         id="item-manufacturer"
-                        type="text"
-                        value={manufacturer.inputValue}
-                        onChange={manufacturer.onChange}
-                    />
+                        value={selectManufacturer}
+                        onChange={(e) => {
+                            setSelectedManufacturer(e.target.value)
+                            manufacturer.onChange(e);
+                        }}
+                    >
+                        <option value="">--Select a Manufacturer--</option>
+                        <option value={Manufacturer.LG}>LG</option>
+                        <option value={Manufacturer.SAMSUNG}>SAMSUNG</option>
+                        <option value={Manufacturer.LOGITEC}>LOGITEC</option>
+                        <option value={Manufacturer.HP}>HP</option>
+                        <option value={Manufacturer.SONY}>SONY</option>
+                        <option value={Manufacturer.PANASONIC}>PANASONIC</option>
+                        <option value={Manufacturer.BAYER}>BAYER</option>
+                        <option value={Manufacturer.JOHNSON_AND_JOHNSON}>JOHNSON & JOHNSON</option>
+                        <option value={Manufacturer.ORGANIKA}>ORGANIKA</option>
+                        <option value={Manufacturer.PROCTER_AND_GAMBLE}>PROCTER & GAMBLE</option>
+                        <option value={Manufacturer.LOREAL}>L'OREAL</option>
+                        <option value={Manufacturer.KRAFT}>KRAFT</option>
+                        <option value={Manufacturer.MAPLE_LEAF}>MAPLE LEAF</option>
+                        <option value={Manufacturer.MCCAIN}>MCCAIN</option>
+                        <option value={Manufacturer.PC}>PC</option>
+                        <option value={Manufacturer.DOLE}>DOLE</option>
+                        <option value={Manufacturer.DEL_MONTE}>DEL MONTE</option>
+                    </select>
                     {manufacturer.error && <p className="error">{manufacturer.error}</p>}
                 </div>
 
