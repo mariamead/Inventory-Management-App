@@ -1,11 +1,12 @@
 .inventory-form {
     max-width: 1150px;
-    width: 100%;
+    width: 95%;
     margin: 15px auto;
     border-radius: 10px;
     border: 2px solid  #127b7b;
     padding: 15px;
     align-content: auto;
+    overflow: hidden;
 
 }
 
@@ -32,10 +33,14 @@
   font-weight: 600;
 }
 
-.item-data input {
+.item-data input, select {
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  background-color: #2F4F4F;
+  font-weight: bold;
+  width: 100%;
+  max-width: 100%;
 }
 
 #item-description {
@@ -45,6 +50,10 @@
   border-radius: 5px;
   background-color: #2F4F4F;
   resize: vertical;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100%;
+  max-width: 100%;
 }
 
 
@@ -65,4 +74,18 @@
     color: darkred;
 }
 
-
+@media (max-width: 600px) {
+  .inventory-form form {
+    grid-template-columns: 1fr; 
+  }
+  #item-description, 
+  .button-cell, 
+  .submitButton {
+    grid-column: 1 / -1; 
+    justify-self: stretch;
+  }
+  
+  .inventoryTable {
+      font-size: 14px;
+  }
+}

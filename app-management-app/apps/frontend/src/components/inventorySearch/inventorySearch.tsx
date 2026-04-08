@@ -43,7 +43,7 @@ function InventorySearch() {
             
             setInventoryStock(prev => {
                 if (prev.some(i => i.id === result.id)) return prev;
-                return [...prev, result]; // Append new item
+                return [...prev, result]; 
             }); 
             return result;
         } catch (error: unknown) {

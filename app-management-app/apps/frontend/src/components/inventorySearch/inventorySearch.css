@@ -7,6 +7,12 @@
     padding-top: 1rem;
 }
 
+.inventoryTable {
+    width: 80%;
+    table-layout: fixed; 
+    border-collapse: collapse;
+}
+
 .inventory-search h2 {
     font-family: "Montserrat", Arial, sans-serif;
     font-size: 1.5rem;
@@ -18,9 +24,16 @@
     font-size: 18px;
 }
 
+.inventoryTable th:nth-child(1) { width: 8%; }
+.inventoryTable th:nth-child(3) { width: 25%; }
+.inventoryTable th:nth-child(7) { width: 7%; }
+
 .inventoryTable th,
 .inventoryTable td {
     text-align: left;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding: 5px;
     border: 1px solid #2F4F4F;
 }
