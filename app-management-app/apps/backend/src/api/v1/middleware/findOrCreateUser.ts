@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { getAuth } from "@clerk/express";
 import * as profileService from "../services/profileService";
-import { FrontendProfile } from "@shared/types/frontend-profile";
+import { User } from "@prisma/client";
 
 /**
  * If a sessionToken is included in Authorization header, get userId from Clerk
  * If user does not exist, add user to back-end database
  */
-export const AuthenticateUser = async(
+export const findOrCreateUser = async(
     req: Request,
     _res: Response,
     next: NextFunction
@@ -19,7 +19,7 @@ export const AuthenticateUser = async(
         
         // store in simple userId table 
         if(userId) {
-            let backendUser : FrontendProfile|null = await profileService.getProfileById(userId);
+            let backendUser : User|null = await profileService.getProfileById(userId);
             if(!backendUser) {
                 backendUser= await profileService.createProfile({id: userId});
             }
