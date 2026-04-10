@@ -52,8 +52,8 @@ model User {
   email      String   @unique
   phone      String   @default("000-000-0000")
   address    String   @default("unknown")
-  locationId Int
-  location   Location @relation(fields: [locationId], references: [id])
+  locationId Int? //Making this optional for Clerk user creation can be updated or added after user is created.
+  location   Location? @relation(fields: [locationId], references: [id])
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }

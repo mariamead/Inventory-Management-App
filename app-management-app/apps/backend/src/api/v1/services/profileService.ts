@@ -1,5 +1,7 @@
 import type { FrontendProfile } from '@shared/types/frontend-profile';
 import  prisma  from "../../../../prisma/prismaClient";
+import { clerkClient } from '@clerk/express';
+import { User } from "@prisma/client";
 
 const profileSelect = {
     id: true,
@@ -37,6 +39,42 @@ export const getProfileById = async (id: string): Promise<FrontendProfile | null
         throw error;
     }
 };
+
+/**
+ * This is to get profile by ClerkId when trying to Auth.
+ * @param clerkId - The string id provided by clerk for Auth
+ * @returns the corresponding correct Profile
+ */
+export const getProfileByClerkId = async (clerkId: string): Promise<User> => {
+    return prisma.user.findFirst({
+        where: { clerkId }
+    });
+};
+
+export const createProfile = async (clerkId: string): Promise<User> => {
+    const clerkUser = await clerkClient.users.getUser(clerkId);
+
+    const email = clerkUser.emailAddresses[0]?.emailAddress ?? "unknown";
+
+    const name = clerkUser.firstName && clerkUser.lastName
+        ? `${clerkUser.firstName} ${clerkUser.lastName}`
+        : clerkUser.firstName ?? "unknown";
+
+    const newUser = await prisma.user.upsert({
+        where: { clerkId },
+        update: {},
+        create: {
+            clerkId,
+            email,
+            name,
+            phone: "000-000-0000",
+            address: "unknown",
+            locationId: null,
+        },
+    });
+    return newUser;
+
+}
 
 /**
  * Update user profile by ID
