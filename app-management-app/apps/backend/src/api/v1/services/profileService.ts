@@ -5,6 +5,7 @@ import { User } from "@prisma/client";
 
 const profileSelect = {
     id: true,
+    clerkId: true,
     name: true,
     email: true,
     phone: true,
@@ -97,6 +98,27 @@ export const updateProfile = async (
             data: data,
             select: profileSelect
         });
+
+        // Added update to clerk so that the info and clerk will remain synced.
+        //Only happens if clerkId exists and the following fields are changed.
+        if(updatedProfile.clerkId && (data.email || data.name)) {
+            const [firstName, ...lastNameParts] = (data.name || "").split(/\s+/);
+            const lastName = lastNameParts.join(" ");
+
+            await clerkClient.users.updateUser(updatedProfile.clerkId, {
+                firstName: firstName || "User", // default fallback
+                lastName: lastName || undefined,
+            });
+            // updates the email to clerk.
+            if(data.email) {
+                await clerkClient.emailAddresses.createEmailAddress({
+                    userId: updatedProfile.clerkId,
+                    emailAddress: data.email,
+                    primary: true,
+                    verified: true
+                });
+            }
+        }
         return mapToFrontendProfile(updatedProfile);
     } catch (error) {
         console.error('Error updating profile:', error);
