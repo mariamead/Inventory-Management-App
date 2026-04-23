@@ -5,6 +5,12 @@ import * as inventoryListController from "../controllers/inventoryListController
 
 const router: Router = express.Router();
 
+
+router.get(
+    "/inventory/public",
+    inventoryListController.getPublicInventoryStock
+);
+
 router.get("/inventory", inventoryListController.getAllInventoryStock);
 
 router.post(

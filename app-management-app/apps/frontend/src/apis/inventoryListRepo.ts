@@ -7,14 +7,19 @@ type InventoryStockResponseJSON = { message: String, data: InventoryStock};
 // Vite provides this value from the .env file rather than dotenv package
 const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 const INVENTORY_ENDPOINT = "/inventory";
+const INVENTORY_PUBLIC_ENDPOINT = "/inventory/public";
 
 /**
  * A function to fetch all data from API
  * @returns - All data found in InventoryStock[]
  */
 export async function fetchAllInventoryStock(sessionToken?: string | null): Promise<InventoryStock[]> {
+    const ENDPOINT = sessionToken
+        ? INVENTORY_ENDPOINT
+        : INVENTORY_PUBLIC_ENDPOINT;
+
     const inventoryResponse: Response = await fetch(
-        `${BASE_URL}${INVENTORY_ENDPOINT}`, 
+        `${BASE_URL}${ENDPOINT}`, 
         sessionToken? {
             headers: {
                 Authorization: `Bearer ${sessionToken}`,

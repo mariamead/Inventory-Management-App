@@ -16,6 +16,7 @@ function InventorySearch() {
     const { search, setSearch, filteredText } = useSearchFilter(stockList, "name");
     const [showForm, setShowForm] = useState(false);
     const { isSignedIn, isLoaded, getToken } = useAuth();
+    const isPrivateView = isSignedIn
 
     useEffect(() => {
         const fetchStockData = async () => {
@@ -61,6 +62,7 @@ function InventorySearch() {
         }
     };
 
+
     return(
         // Inventory section to show a table of inventory items
         <section className="inventory-search">
@@ -102,28 +104,28 @@ function InventorySearch() {
             <table className="inventoryTable">
                 <thead>
                     <tr className="header-title">
-                        <th>Id</th>
+                        {isPrivateView && <th>Id</th>}
                         <th>Item Name</th>
                         <th>Description</th>
-                        <th>Location</th>
+                        {isPrivateView && <th>Location</th>}
                         <th>Manufacturer</th>
                         <th>Category</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
+                        {isPrivateView && <th>Quantity</th>}
+                        {isPrivateView && <th>Price</th>}
                     </tr>
                 </thead>
                     {/*Data for table will be populated here.*/}
                 <tbody className="inventoryTableBody">
                     {filteredText.map((item) => (
                         <tr key={item.id}>
-                            <td>{item.id}</td>
+                            {isPrivateView && <td>{item.id}</td>}
                             <td>{item.name}</td>
                             <td>{item.description}</td>
-                            <td>{item.location}</td>
+                            {isPrivateView && <td>{item.location}</td>}
                             <td>{item.manufacturer}</td>
                             <td>{item.category}</td>
-                            <td>{Number(item.quantity)}</td>
-                            <td>{Number(item.price.toFixed(2))}</td>
+                            {isPrivateView && <td>{Number(item.quantity)}</td>}
+                            {isPrivateView && <td>{Number(item.price?.toFixed(2))}</td>}
                         </tr>
                     ))}
                 </tbody>

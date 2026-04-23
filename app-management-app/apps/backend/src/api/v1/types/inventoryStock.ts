@@ -11,4 +11,3 @@ export type InventoryStock = {
     price: number;
     lowStockThreshold: number;
 }
-

@@ -11,45 +11,49 @@ import { AppError } from "../errors/errors";
  * A function to return all items in stockData
  * @returns -All items in stock data
  */
-export const getAllInventoryStock = async(): Promise<InventoryStock[]> => {
+export const getAllInventoryStock = async(
+    locationId?: number
+): Promise<InventoryStock[]> => {
     // nested read
     try{
-        const allStockData = await prisma.product.findMany({
+        const data = await prisma.inventory.findMany({
+            where: locationId
+            ? { locationId: locationId}
+            : {},
             select: {
-                id: true,
-                name: true,
-                description: true,
-                manufacturer: true,
-                category: true,
-                price: true,
-                inventory:  {
+                quantity: true,
+                threshold: true,
+                location: {
                     select: {
-                        quantity: true,
-                        threshold: true,
-                        location: {
-                            select: {
-                                name: true
-                            }
-                        }
+                        name: true
+                    }
+                },
+                product: {
+                    select: {
+                        id: true,
+                        name: true,
+                        description: true,
+                        manufacturer: true,
+                        category: true,
+                        price: true,
                     }
                 }
             }
+            
         });
 
         //Formatting the data to match the oject for backend and frontend as incoming data will be nested.
-        const allData: InventoryStock[] = allStockData.flatMap(product => 
-            product.inventory.map(inventory => ({
-                id: product.id.toString(),
-                name: product.name,
-                description: product.description,
-                manufacturer: product.manufacturer,
-                category: product.category,
-                price: product.price.toNumber(), //converting decimal to number as frontend is a number.
-                quantity: inventory.quantity,
-                lowStockThreshold: inventory.threshold,
-                location: inventory.location.name
-            }))
-        );
+        const allData: InventoryStock[] = data.map(item => ({
+                id: item.product.id.toString(),
+                name: item.product.name,
+                description: item.product.description,
+                manufacturer: item.product.manufacturer,
+                category: item.product.category,
+                price: item.product.price.toNumber(), //converting decimal to number as frontend is a number.
+                quantity: item.quantity,
+                lowStockThreshold: item.threshold,
+                location: item.location.name
+        }));
 
         return allData;
     } catch (error: unknown) {

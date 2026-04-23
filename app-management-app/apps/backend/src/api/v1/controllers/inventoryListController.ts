@@ -4,13 +4,42 @@ import { HTTP_STATUS } from "../../../constants/httpConstants";
 import * as inventoryListService from "../services/inventoryListService";
 import type { InventoryStock } from "../types/inventoryStock";
 
-export const getAllInventoryStock = async(
+
+//Public controller
+export const getPublicInventoryStock = async (
     _req: Request,
     res: Response,
     next: NextFunction
 ): Promise<void> => {
+    try{
+        const stockData = await inventoryListService.getAllInventoryStock();
+
+        const publicData = stockData.map(item => ({
+            name: item.name,
+            description: item.description,
+            manufacturer: item.manufacturer,
+            category: item.category
+        }));
+
+        res.status(HTTP_STATUS.OK).json(
+            successResponse(publicData,
+                "Public stock items retrieved successfully."
+            )
+        );
+    } catch (error: unknown) {
+        next(error);
+    }
+}
+
+export const getAllInventoryStock = async(
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
     try {
-        const stockData: InventoryStock[] = await inventoryListService.getAllInventoryStock();
+        const user = req.userId;
+        const stockData: InventoryStock[] = await inventoryListService.getAllInventoryStock(user.locationId);
+
         res.status(HTTP_STATUS.OK).json(
             successResponse(stockData, "Stock Items retrieved successfully.")
         );

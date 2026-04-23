@@ -3,12 +3,12 @@ export type InventoryStock = {
     id?: string;
     name: string;
     description: string;
-    location: string;
+    location?: string;
     manufacturer: Manufacturer;
     category: Category;
-    quantity: number;
-    price: number;
-    lowStockThreshold: number;
+    quantity?: number;
+    price?: number;
+    lowStockThreshold?: number;
 }
 
 export enum Category {
