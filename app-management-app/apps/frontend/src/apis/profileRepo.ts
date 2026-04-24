@@ -112,10 +112,13 @@ export const getAllProfiles = async (): Promise<FrontendProfile[]> => {
 /**
  * Get a single profile by ID from the backend
  * @param id - The profile ID
+ * @param token - The user's session token
  * @returns The profile data
  */
-export const getProfile = async (id: string): Promise<FrontendProfile> => {
-  const json = await apiFetch<APIResponse<FrontendProfile>>(`${API_BASE_URL}${PROFILE_ENDPOINT}/${id}`);
+export const getProfile = async (id: string, token: string): Promise<FrontendProfile> => {
+  const json = await apiFetch<APIResponse<FrontendProfile>>(`${API_BASE_URL}${PROFILE_ENDPOINT}/${id}`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
   return json.data;
 };
 
@@ -123,17 +126,22 @@ export const getProfile = async (id: string): Promise<FrontendProfile> => {
  * Update a profile through the backend
  * @param id - The profile ID
  * @param updatedData - The data to update
+ * @param token - The user's session token
  * @returns The updated profile
  */
 export const updateProfile = async (
   id: string,
-  updatedData: Partial<Omit<FrontendProfile, 'id'>>
+  updatedData: Partial<Omit<FrontendProfile, 'id'>>,
+  token: string
 ): Promise<FrontendProfile> => {
   const json = await apiFetch<APIResponse<FrontendProfile>>(
     `${API_BASE_URL}${PROFILE_ENDPOINT}/${id}`,
     {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
       body: JSON.stringify(updatedData),
     }
   );
