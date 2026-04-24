@@ -3,6 +3,7 @@
   // any overriding configs defined here
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "target": "ES2022",
     "lib": ["ES2023"],
     "module": "ESNext",

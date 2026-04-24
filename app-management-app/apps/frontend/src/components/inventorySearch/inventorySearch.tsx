@@ -4,10 +4,10 @@ import "./inventorySearch.css";
 import { AddInventoryItemForm } from "../addInventoryItem/addInventoryItem";
 import { useEffect, useState } from "react";
 
-import type { FrontendInventoryStock as InventoryStock } from "@shared/types/frontend-InventoryStock";
+import type { InventoryStock } from "../../types/inventoryStock";
 import { addInventoryStock } from "../../services/stockService";
 import { fetchAllInventoryStock } from "../../apis/inventoryListRepo";
-
+import { useAuth } from "@clerk/clerk-react";
 
 // Function to filter inventory by text in a search field
 function InventorySearch() {
@@ -15,19 +15,23 @@ function InventorySearch() {
     //Setting state to prepare for input to change state used a custom hook called useSearch filter
     const { search, setSearch, filteredText } = useSearchFilter(stockList, "name");
     const [showForm, setShowForm] = useState(false);
+    const { isSignedIn, isLoaded, getToken } = useAuth();
+    const isPrivateView = isSignedIn
 
     useEffect(() => {
         const fetchStockData = async () => {
             try {
-                const data = await fetchAllInventoryStock(); 
+                const token = isSignedIn ? await getToken() : null;
+                const data = await fetchAllInventoryStock(token); 
                 setInventoryStock(data);
             } catch (error) {
                 console.error("Error fetching inventory stock data:", error);
             }
         };
         fetchStockData(); 
-    }, []);
+    }, [isSignedIn]);
 
+    if (!isLoaded) return <div> Loading....</div>;
 
     // Adding inventory item to bottom of list with last number + 1 for Id
     // will need to be adjusted when database introduced
@@ -35,21 +39,21 @@ function InventorySearch() {
         item: Omit<InventoryStock, "id">
     ): Promise<string | InventoryStock> => {
         try {
-            const result = await addInventoryStock(item);
+            if( !isSignedIn) return "Please Sign in...";
+
+            const token = await getToken();
+            if(!token) throw new Error("User is not authenticated.");
+
+            const result = await addInventoryStock(item, token);
             if (typeof result === "string") {
                
                 return result; 
             }
             
-            setInventoryStock(prev => [
-                ...prev.filter(
-                    item => 
-                        item.name !== result.name || item.description !== result.description ||
-                        item.location !== result.location || item.manufacturer !== result.manufacturer ||
-                        item.category !== result.category || item.quantity !== result.quantity ||
-                        item.price !== result.price
-                ), {...result}
-            ]); 
+            setInventoryStock(prev => {
+                if (prev.some(i => i.id === result.id)) return prev;
+                return [...prev, result]; 
+            }); 
             return result;
         } catch (error: unknown) {
             if(error instanceof Error) {
@@ -58,6 +62,7 @@ function InventorySearch() {
             return "An unexpected error occurred.";
         }
     };
+
 
     return(
         // Inventory section to show a table of inventory items
@@ -72,8 +77,8 @@ function InventorySearch() {
                         setSearch(text.target.value)}
                 />    
             </label>
-
-            {/* A button to toggle the form or hide it when not needed */}
+            
+            {/* A button to toggle the form or hide it when not needed Only if the user is signed in*/}
             <button
                 type="button"
                 className="toggleFormButton"
@@ -81,39 +86,47 @@ function InventorySearch() {
             >
                 {showForm ? "Hide Form" : "Add New Item"}
             </button>
-            {/* We show form and render it to the page*/}
-            {showForm && (
-                <AddInventoryItemForm
-                    stockData={stockList} 
-                    addInventoryStock={addStockItem} 
-                />
+            
+            {isSignedIn ? (
+                <>
+                    {showForm && (
+                        <AddInventoryItemForm
+                            stockData={stockList} 
+                            addInventoryStock={addStockItem} 
+                        />
+                    )}
+                </>
+            ): (
+                <div className="login-to-add">
+                    <p>Please Sign In to Add Inventory</p>
+                </div>
             )}
 
             <table className="inventoryTable">
                 <thead>
                     <tr className="header-title">
-                        <th>Id</th>
+                        {isPrivateView && <th>Id</th>}
                         <th>Item Name</th>
                         <th>Description</th>
-                        <th>Location</th>
+                        {isPrivateView && <th>Location</th>}
                         <th>Manufacturer</th>
                         <th>Category</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
+                        {isPrivateView && <th>Quantity</th>}
+                        {isPrivateView && <th>Price</th>}
                     </tr>
                 </thead>
                     {/*Data for table will be populated here.*/}
                 <tbody className="inventoryTableBody">
                     {filteredText.map((item) => (
-                        <tr key={item.id}>
-                            <td>{item.id}</td>
+                        <tr key={item.id ?? `${item.name}-${item.location}`}>
+                            {isPrivateView && <td>{item.id}</td>}
                             <td>{item.name}</td>
                             <td>{item.description}</td>
-                            <td>{item.location}</td>
+                            {isPrivateView && <td>{item.location}</td>}
                             <td>{item.manufacturer}</td>
                             <td>{item.category}</td>
-                            <td>{Number(item.quantity)}</td>
-                            <td>{Number(item.price.toFixed(2))}</td>
+                            {isPrivateView && <td>{Number(item.quantity)}</td>}
+                            {isPrivateView && <td>{Number(item.price?.toFixed(2))}</td>}
                         </tr>
                     ))}
                 </tbody>

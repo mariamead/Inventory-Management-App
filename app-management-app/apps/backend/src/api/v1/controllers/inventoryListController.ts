@@ -2,7 +2,34 @@ import { Request, Response, NextFunction } from "express";
 import { successResponse, errorResponse } from "../models/responseModel";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
 import * as inventoryListService from "../services/inventoryListService";
-import type { FrontendInventoryStock } from "@shared/types/frontend-InventoryStock";
+import type { InventoryStock } from "../types/inventoryStock";
+
+
+//Public controller
+export const getPublicInventoryStock = async (
+    _req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try{
+        const stockData = await inventoryListService.getAllInventoryStock();
+
+        const publicData = stockData.map(item => ({
+            name: item.name,
+            description: item.description,
+            manufacturer: item.manufacturer,
+            category: item.category
+        }));
+
+        res.status(HTTP_STATUS.OK).json(
+            successResponse(publicData,
+                "Public stock items retrieved successfully."
+            )
+        );
+    } catch (error: unknown) {
+        next(error);
+    }
+}
 
 export const getAllInventoryStock = async(
     _req: Request,
@@ -10,7 +37,8 @@ export const getAllInventoryStock = async(
     next: NextFunction
 ): Promise<void> => {
     try {
-        const stockData: FrontendInventoryStock[] = await inventoryListService.getAllInventoryStock();
+        const stockData: InventoryStock[] = await inventoryListService.getAllInventoryStock();
+
         res.status(HTTP_STATUS.OK).json(
             successResponse(stockData, "Stock Items retrieved successfully.")
         );

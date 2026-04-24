@@ -114,8 +114,12 @@ export default function ProfilePage() {
                   <div className="profile-label">Location</div>
                   <div className="profile-value">
                     {isEditing ? (
-                      <select className="profile-input">
+                      <select className="profile-input" id="locationId">
                         <option>Select a location</option>
+                        <option value="1">Warehouse A</option>
+                        <option value="2">Warehouse B</option>
+                        <option value="3">Warehouse C</option>
+                        <option value="4">Warehouse D</option>
                       </select>
                     ) : (
                       "Not set"

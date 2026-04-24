@@ -7,11 +7,13 @@ import { requireAuth } from "@clerk/express";
 
 const router: Router = express.Router();
 
+
 router.get(
-    "/inventory",
-    findOrCreateUser, 
-    inventoryListController.getAllInventoryStock
+    "/inventory/public",
+    inventoryListController.getPublicInventoryStock
 );
+
+router.get("/inventory", inventoryListController.getAllInventoryStock);
 
 router.post(
     "/inventory",

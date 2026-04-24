@@ -1,5 +1,5 @@
 import Joi, { ObjectSchema } from "joi";
-
+import { Category, Manufacturer } from "@prisma/client";
 
 export const inventoryListSchema: ObjectSchema = Joi.object({
     name: Joi.string().required().min(3).messages({
@@ -16,14 +16,15 @@ export const inventoryListSchema: ObjectSchema = Joi.object({
         "any.required": "Location is required",
         "string.empty": "Location cannot be empty."
     }),
-    manufacturer: Joi.string().required().messages({
+    manufacturer: Joi.string().valid(...Object.values(Manufacturer)).required().messages({
+        "any.only": "Please select a valid manufacturer from the list.",
         "any.required": "Manufacturer is required",
         "string.empty": "Manufacturer cannot be empty."
     }),
-    category: Joi.string().required().min(3).messages({
+    category: Joi.string().valid(...Object.values(Category)).required().messages({
+        "any.only": "Please select a valid category from the list.",
         "any.required": "Category is required",
         "string.empty": "Category cannot be empty.",
-        "string.min": "Category must be a least 3 characters long."
     }),
     quantity: Joi.number().integer().min(0).required().messages({
         "number.min": "Quantity must be 0 or greater.",
