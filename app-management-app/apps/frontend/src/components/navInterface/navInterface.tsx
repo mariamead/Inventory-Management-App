@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
-import { NavLink } from 'react-router-dom';
-import './navInterface.css';
+import { useState, useEffect, useRef } from "react";
+import { NavLink } from "react-router-dom";
+import "./navInterface.css";
+import { UserButton, SignedIn, SignedOut, SignInButton } from "@clerk/clerk-react";
 
 function NavInterface() {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,12 +40,12 @@ function NavInterface() {
         </ul>
 
         <div className="navbar-action">
-          <NavLink
-            to="/login"
-            className="navbar-login"
-          >
-            Log In
-          </NavLink>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
         </div>
 
         <div className="navbar-hamburger" onClick={toggleMenu} ref={hamburgerRef}>
@@ -58,12 +59,12 @@ function NavInterface() {
           <li><NavLink to="/inventory-search" onClick={closeMenu}>Inventory Search</NavLink></li>
           <li><NavLink to="/low-stock-alerts" onClick={closeMenu}>Low Stock Alerts</NavLink></li>
           <li>
-            <NavLink 
-              to="/login"
-              onClick={closeMenu}
-            >
-              Log In
-            </NavLink>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
           </li>
         </ul>
       </div>
