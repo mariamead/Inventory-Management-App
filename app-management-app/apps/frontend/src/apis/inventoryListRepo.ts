@@ -13,7 +13,7 @@ const INVENTORY_PUBLIC_ENDPOINT = "/inventory/public";
  * A function to fetch all data from API
  * @returns - All data found in InventoryStock[]
  */
-export async function fetchAllInventoryStock(sessionToken?: string | null): Promise<InventoryStock[]> {
+export async function fetchAllInventoryStock(sessionToken: string | null): Promise<InventoryStock[]> {
     const ENDPOINT = sessionToken
         ? INVENTORY_ENDPOINT
         : INVENTORY_PUBLIC_ENDPOINT;
@@ -31,7 +31,9 @@ export async function fetchAllInventoryStock(sessionToken?: string | null): Prom
     }
 
     const json: InventoryStocksResponseJSON = await inventoryResponse.json();
+    console.log(json)
     return json.data;
+    
 };
 
 

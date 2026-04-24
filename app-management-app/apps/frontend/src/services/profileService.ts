@@ -6,6 +6,9 @@ export type ProfileData = {
     email: string;
     phone: string;
     address: string;
+    locationId?: number | null;
+    locationName?: string | null;
+
 }
 
 export async function fetchProfileById(userId: string, token: string): Promise<ProfileData> {

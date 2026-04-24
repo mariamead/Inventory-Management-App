@@ -10,6 +10,8 @@ const profileSelect = {
     email: true,
     phone: true,
     address: true,
+    locationId: true,
+    location: true
 };
 
 // Map to front end profile
@@ -19,6 +21,8 @@ const mapToFrontendProfile = (profile: any): FrontendProfile => ({
     email: profile.email,
     phone: profile.phone,
     address: profile.address,
+    locationId: profile.locationId,
+    locationName: profile.location?.name ?? null,
 });
 
 /**
@@ -48,7 +52,10 @@ export const getProfileById = async (id: string): Promise<FrontendProfile | null
  */
 export const getProfileByClerkId = async (clerkId: string): Promise<User|null> => {
     return prisma.user.findFirst({
-        where: { clerkId }
+        where: { clerkId },
+        include: {
+            location: true,
+        },
     });
 };
 
@@ -89,13 +96,20 @@ export const createProfile = async (clerkId: string): Promise<User> => {
  * @returns - The updated user profile
  */
 export const updateProfile = async (
-    id: string,
+    clerkId: string,
     data: Partial<Omit<FrontendProfile, 'id'>>
 ): Promise<FrontendProfile> => {
     try {
+        const { name, email, phone, address, locationId } = data;
         const updatedProfile = await prisma.user.update({
-            where: { id: parseInt(id) },
-            data: data,
+            where: { clerkId },
+            data: {
+                name,
+                email,
+                phone,
+                address,
+                locationId,
+            },
             select: profileSelect
         });
 
@@ -106,18 +120,11 @@ export const updateProfile = async (
             const lastName = lastNameParts.join(" ");
 
             await clerkClient.users.updateUser(updatedProfile.clerkId, {
-                firstName: firstName || "User", // default fallback
-                lastName: lastName || undefined,
+                firstName:  firstName || "User",
+                lastName:lastName || undefined,
+                ...(data.email ? { emailAddress: [data.email] } : {})
             });
-            // updates the email to clerk.
-            if(data.email) {
-                await clerkClient.emailAddresses.createEmailAddress({
-                    userId: updatedProfile.clerkId,
-                    emailAddress: data.email,
-                    primary: true,
-                    verified: true
-                });
-            }
+        
         }
         return mapToFrontendProfile(updatedProfile);
     } catch (error) {

@@ -4,4 +4,6 @@ export type FrontendProfile = {
     email: string;
     phone: string;
     address: string;
+    locationId?: number | null;
+    locationName?: string | null;
 }

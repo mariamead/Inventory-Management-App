@@ -9,8 +9,8 @@ export const getProfile = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const id = req.params.id as string;
-    const user = await profileService.getProfileById(id);
+    const id = req.params.clerkId as string;
+    const user = await profileService.getProfileByClerkId(id);
 
     if (!user) {
       res.status(HTTP_STATUS.NOT_FOUND).json(errorResponse("User profile not found."));
@@ -30,7 +30,7 @@ export const updateProfile = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const id = req.params.id as string;
+    const id = req.params.clerkId as string;
     const { name, email, phone, address } = req.body;
 
     if (!name || !email || !phone || !address) {

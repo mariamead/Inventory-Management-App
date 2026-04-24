@@ -21,7 +21,8 @@ function InventorySearch() {
     useEffect(() => {
         const fetchStockData = async () => {
             try {
-                const token = isSignedIn ? await getToken() : null;
+                if(!isLoaded) return;
+                const token = await getToken();
                 const data = await fetchAllInventoryStock(token); 
                 setInventoryStock(data);
             } catch (error) {
@@ -29,7 +30,7 @@ function InventorySearch() {
             }
         };
         fetchStockData(); 
-    }, [isSignedIn]);
+    }, [isLoaded, getToken]);
 
     if (!isLoaded) return <div> Loading....</div>;
 
