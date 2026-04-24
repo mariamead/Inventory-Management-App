@@ -1,5 +1,17 @@
 # Full-Stack Project - Inventory Management App
 
+## Project Instruction
+
+- The Development installation instructions can be found within the directory app-management-app in the README.md
+file of how to install it locally with use of PostgreSQL database in a docker container for local setup.
+
+- Inventory-Management-App/app-management-app/README.md
+
+```bash
+cd app-management-app
+
+```
+
 ## Project Team
 
 - Maria Mead

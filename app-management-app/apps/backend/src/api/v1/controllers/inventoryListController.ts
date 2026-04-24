@@ -32,13 +32,12 @@ export const getPublicInventoryStock = async (
 }
 
 export const getAllInventoryStock = async(
-    req: Request,
+    _req: Request,
     res: Response,
     next: NextFunction
 ): Promise<void> => {
     try {
-        const user = req.userId;
-        const stockData: InventoryStock[] = await inventoryListService.getAllInventoryStock(user.locationId);
+        const stockData: InventoryStock[] = await inventoryListService.getAllInventoryStock();
 
         res.status(HTTP_STATUS.OK).json(
             successResponse(stockData, "Stock Items retrieved successfully.")
