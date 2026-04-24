@@ -1,6 +1,7 @@
 import express, {Express} from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import { clerkMiddleware } from "@clerk/express";
 
 console.log("Trying deployment trigger");
 dotenv.config();
@@ -21,6 +22,9 @@ app.use(express.json());
 
 //add cors middleware
 app.use(cors(corsOptions));
+
+// add clerk middleware
+app.use(clerkMiddleware());
 
 // Listening for requests 
 app.get("/",  (_req, res) => {

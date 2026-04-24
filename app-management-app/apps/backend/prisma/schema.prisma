@@ -1,23 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 model Location {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
+  id        Int         @id @default(autoincrement())
+  name      String      @unique
   address   String
   city      String
   province  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
- 
-  users        User[]
-  inventory  Inventory[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  inventory Inventory[]
+  users     User[]
 }
 
 model Product {
@@ -27,44 +27,44 @@ model Product {
   category     Category
   manufacturer Manufacturer
   price        Decimal      @db.Decimal(10, 2)
+  inventory    Inventory[]
 
-  inventory  Inventory[]
- 
   @@unique([name, manufacturer])
 }
- 
+
 model Inventory {
   id         Int      @id @default(autoincrement())
-  productId  Int
-  locationId Int
   quantity   Int
+  locationId Int
+  productId  Int
   threshold  Int
 
-  product    Product  @relation(fields: [productId], references: [id])
   location   Location @relation(fields: [locationId], references: [id])
- 
+  product    Product  @relation(fields: [productId], references: [id])
+
   @@unique([productId, locationId])
 }
- 
+
 model User {
   id         Int      @id @default(autoincrement())
+  clerkId    String?   @unique
   name       String   @default("unknown")
   email      String   @unique
   phone      String   @default("000-000-0000")
   address    String   @default("unknown")
-  locationId Int
-  location   Location @relation(fields: [locationId], references: [id])
+  locationId Int? //Making this optional for Clerk user creation can be updated or added after user is created.
+  location   Location? @relation(fields: [locationId], references: [id])
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
- 
+
 enum Category {
   FOOD
   ELECTRONICS
   HEALTH
   BEAUTY
 }
- 
+
 enum Manufacturer {
   LG
   SAMSUNG

@@ -1,10 +1,13 @@
 import { Router } from "express";
 import { getProfile, updateProfile, getAllProfiles } from "../controllers/profileController";
+import { findOrCreateUser } from "../middleware/findOrCreateUser";
+import { requireAdmin } from "../middleware/requireAdmin";
+import { requireAuth } from "@clerk/express";
 
 const router: Router = Router();
 
-router.get("/", getAllProfiles);
-router.get("/:id", getProfile);
-router.put("/:id", updateProfile);
+router.get("/", requireAuth, findOrCreateUser, requireAdmin, getAllProfiles);
+router.get("/:id", requireAuth, findOrCreateUser,getProfile);
+router.put("/:id", requireAuth,findOrCreateUser, updateProfile);
 
 export default router;

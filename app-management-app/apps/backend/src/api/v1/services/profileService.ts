@@ -1,8 +1,11 @@
 import type { FrontendProfile } from '@shared/types/frontend-profile';
 import  prisma  from "../../../../prisma/prismaClient";
+import { clerkClient } from '@clerk/express';
+import { User } from "@prisma/client";
 
 const profileSelect = {
     id: true,
+    clerkId: true,
     name: true,
     email: true,
     phone: true,
@@ -39,6 +42,47 @@ export const getProfileById = async (id: string): Promise<FrontendProfile | null
 };
 
 /**
+ * This is to get profile by ClerkId when trying to Auth.
+ * @param clerkId - The string id provided by clerk for Auth
+ * @returns the corresponding correct Profile
+ */
+export const getProfileByClerkId = async (clerkId: string): Promise<User|null> => {
+    return prisma.user.findFirst({
+        where: { clerkId }
+    });
+};
+
+/**
+ * Function to create a user when user registers using clerk.
+ * @param clerkId -String id from clerk to identify user
+ * @returns - user that was created by Clerk
+ */
+export const createProfile = async (clerkId: string): Promise<User> => {
+    const clerkUser = await clerkClient.users.getUser(clerkId);
+
+    const email = clerkUser.emailAddresses[0]?.emailAddress ?? "unknown";
+
+    const name = clerkUser.firstName && clerkUser.lastName
+        ? `${clerkUser.firstName} ${clerkUser.lastName}`
+        : clerkUser.firstName ?? "unknown";
+
+    const newUser = await prisma.user.upsert({
+        where: { clerkId },
+        update: {},
+        create: {
+            clerkId,
+            email,
+            name,
+            phone: "000-000-0000",
+            address: "unknown",
+            locationId: null,
+        },
+    });
+    return newUser;
+
+}
+
+/**
  * Update user profile by ID
  * @param id - The user ID
  * @param data - The updated profile data
@@ -54,6 +98,27 @@ export const updateProfile = async (
             data: data,
             select: profileSelect
         });
+
+        // Added update to clerk so that the info and clerk will remain synced.
+        //Only happens if clerkId exists and the following fields are changed.
+        if(updatedProfile.clerkId && (data.email || data.name)) {
+            const [firstName, ...lastNameParts] = (data.name || "").split(/\s+/);
+            const lastName = lastNameParts.join(" ");
+
+            await clerkClient.users.updateUser(updatedProfile.clerkId, {
+                firstName: firstName || "User", // default fallback
+                lastName: lastName || undefined,
+            });
+            // updates the email to clerk.
+            if(data.email) {
+                await clerkClient.emailAddresses.createEmailAddress({
+                    userId: updatedProfile.clerkId,
+                    emailAddress: data.email,
+                    primary: true,
+                    verified: true
+                });
+            }
+        }
         return mapToFrontendProfile(updatedProfile);
     } catch (error) {
         console.error('Error updating profile:', error);
