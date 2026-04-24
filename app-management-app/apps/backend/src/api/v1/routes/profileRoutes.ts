@@ -7,7 +7,7 @@ import { requireAuth } from "@clerk/express";
 const router: Router = Router();
 
 router.get("/", requireAuth, findOrCreateUser, requireAdmin, getAllProfiles);
-router.get("/:id", requireAuth, findOrCreateUser,getProfile);
-router.put("/:id", requireAuth,findOrCreateUser, updateProfile);
+router.get("/:id", findOrCreateUser, getProfile);
+router.put("/:id", requireAuth, findOrCreateUser, updateProfile);
 
 export default router;

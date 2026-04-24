@@ -106,6 +106,19 @@ export default function ProfilePage() {
                     )}
                   </div>
                 </div>
+                <hr />
+                <div className="profile-row">
+                  <div className="profile-label">Location</div>
+                  <div className="profile-value">
+                    {isEditing ? (
+                      <select className="profile-input">
+                        <option>Select a location</option>
+                      </select>
+                    ) : (
+                      "Not set"
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
