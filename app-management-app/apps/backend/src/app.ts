@@ -12,6 +12,7 @@ import inventoryListRoutes from "../src/api/v1/routes/inventoryListRoutes";
 import profileRoutes from "./api/v1/routes/profileRoutes";
 import errorHandler from "./api/v1/middleware/errorHandler";
 import lowStockRoutes from "./api/v1/routes/lowStockRoutes";
+import authRoutes from "./api/v1/routes/authRoutes";
 
 const app: Express = express();
 
@@ -34,6 +35,7 @@ app.get("/",  (_req, res) => {
 app.use("/api/v1", inventoryListRoutes);
 app.use('/api/v1/user-profile', profileRoutes);
 app.use("/api/v1/low-stock", lowStockRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 
 app.use(errorHandler);

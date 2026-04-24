@@ -10,11 +10,14 @@ import ProfilePage from './components/profilePage/profilePage';
 import NavInterface from './components/navInterface/navInterface';
 import SignInPage from "./components/authentication/SignIn";
 import SignUpPage from "./components/authentication/SignUp";
+import { getUserInfo } from "./hooks/getUserInfo";
 
 
 
 function App() {
   // State removed
+
+  getUserInfo()
 
   return (
     <Routes>
