@@ -14,8 +14,9 @@ export const findOrCreateUser = async(
 ): Promise<void> => {
     try {
         // clerk getAuth method authenticates user against HTTP request Authorization heading
-        const { userId: clerkId } = getAuth(req);
-        req.clerkUserId = clerkId;
+        const auth = getAuth(req);
+        const clerkId = auth.userId;
+        console.log("CLERK ID:", clerkId);
 
         if(clerkId) {
              const existingUser: User | null = await profileService.getProfileByClerkId(clerkId);

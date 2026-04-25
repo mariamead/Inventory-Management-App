@@ -82,6 +82,7 @@ export function useUserProfileEdit(userId: string) {
             setIsEditing(false);
             setError(null);
             console.log('Profile saved successfully');
+            console.log("SENDING TO BACKEND:", tempData);
         } catch (err) {
             setError(`Failed to save profile: ${getErrorMessage(err)}`);
             console.error('Failed to save profile:', err);
@@ -94,7 +95,15 @@ export function useUserProfileEdit(userId: string) {
     };
 
     const onChange = (field: string, value: string) => {
-        setTempData(prev => ({ ...prev, [field]: value }));
+        setTempData(prev => ({ 
+            ...prev, 
+            [field]:
+                field === "locationId"
+                    ? value === ""
+                        ? undefined
+                        : Number(value)
+                    : value 
+        }));
     };
 
     return {
