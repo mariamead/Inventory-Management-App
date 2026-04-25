@@ -42,7 +42,7 @@ export function AddInventoryItemForm({
         name.setError(validateName.error ?? null);
         description.setError(validateDescription.error ?? null);
         location.setError(validateLocation.error ?? null);
-        manufacturer.setError(validateLocation.error ?? null);
+        manufacturer.setError(validateManufacturer.error ?? null);
         category.setError(validateCategory.error ?? null);
         quantity.setError(validateQuantity.error ?? null);
         price.setError(validatePrice.error ?? null);
@@ -74,9 +74,9 @@ export function AddInventoryItemForm({
         location.setValue("");
         manufacturer.setValue("");
         category.setValue("");
-        quantity.setValue(0);
-        price.setValue(0);
-        lowStockThreshold.setValue(0);
+        quantity.setValue("");
+        price.setValue("");
+        lowStockThreshold.setValue("");
     };
 
     return(

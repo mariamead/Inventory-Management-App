@@ -119,7 +119,7 @@ function InventorySearch() {
                     {/*Data for table will be populated here.*/}
                 <tbody className="inventoryTableBody">
                     {filteredText.map((item) => (
-                        <tr key={item.id ?? `${item.name}-${item.location}`}>
+                        <tr key={item.id ?? `${item.name}-${item.manufacturer}-${item.category}`}>
                             {isPrivateView && <td>{item.id}</td>}
                             <td>{item.name}</td>
                             <td>{item.description}</td>

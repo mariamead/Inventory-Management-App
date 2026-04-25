@@ -3,7 +3,7 @@ import { Category, Manufacturer, type InventoryStock} from "../types/inventorySt
 import { addStockInventory } from "../apis/inventoryListRepo";
 
 
-export const validateName = (value: string | number): Validation => {
+export const validateName = (value: string | undefined): Validation => {
     const name = String(value); // convert to string
     if (name.length < 3) {
         return { isValid: false, error: "Name of item must be at least 3 characters." };
@@ -11,7 +11,7 @@ export const validateName = (value: string | number): Validation => {
     return { isValid: true, error: "" };
 }
 
-export const validateDescription = (value: string | number): Validation => {
+export const validateDescription = (value: string | undefined): Validation => {
     const description = String(value);
     if (description.length < 5) {
         return { isValid: false, error: "Description must be greater than 5 characters." };
@@ -19,7 +19,7 @@ export const validateDescription = (value: string | number): Validation => {
     return { isValid: true, error: "" };
 }
 
-export const validateLocation = (value: string | number): Validation => {
+export const validateLocation = (value: string | undefined): Validation => {
     const location = String(value);
     if (!location) {
         return { isValid: false, error: "Must have a location."};
@@ -27,21 +27,21 @@ export const validateLocation = (value: string | number): Validation => {
     return { isValid: true, error: "" };
 }
 
-export const validateManufacturer = (value: string | number): Validation => {
+export const validateManufacturer = (value: string | undefined): Validation => {
     if (!value || !Object.values(Manufacturer).includes(value as Manufacturer)) {
         return { isValid: false, error: "A valid manufacturer must be selected." };
     }
     return { isValid: true, error: "" };
 }
 
-export const validateCategory = (value: string | number): Validation => {
+export const validateCategory = (value: string | undefined): Validation => {
     if(!value || !Object.values(Category).includes(value as Category)) {
         return { isValid: false, error: "A valid category must be selected." };
     }
     return { isValid: true, error: "" };
 }
 
-export const validateQuantity = (value: string | number): Validation => {
+export const validateQuantity = (value: string | undefined): Validation => {
     const quantity = Number(value);
     if (isNaN(quantity) || quantity <= 0) {
         return { isValid: false, error: "Quantity must be greater than 0" };
@@ -49,7 +49,7 @@ export const validateQuantity = (value: string | number): Validation => {
     return { isValid: true, error: "" };
 }
 
-export const validatePrice = (value: string | number): Validation => {
+export const validatePrice = (value: string | undefined): Validation => {
     const price = Number(value);
     if (isNaN(price) || price <= 0) {
         return { isValid: false, error: "Price must be greater than 0" };
@@ -57,7 +57,7 @@ export const validatePrice = (value: string | number): Validation => {
     return { isValid: true, error: "" };
 }
 
-export const validateLowStockThreshold = (value: string | number): Validation => {
+export const validateLowStockThreshold = (value: string | undefined): Validation => {
     const lowStockThreshold = Number(value);
     if(isNaN(lowStockThreshold) || lowStockThreshold <= 3) {
         return { isValid: false, error: "Low stock threshold must be 3 or greater."};
@@ -108,17 +108,17 @@ export function validateStock(
         return categoryCheck.error ?? "Invalid Category";
     }
 
-    const quantityCheck = validateQuantity(quantity);
+    const quantityCheck = validateQuantity(String(quantity));
     if (!quantityCheck.isValid) {
         return quantityCheck.error ?? "Invalid Quantity";
     }
 
-    const priceCheck = validatePrice(price);
+    const priceCheck = validatePrice(String(price));
     if (!priceCheck.isValid) {
         return priceCheck.error ?? "Invalid Price";
     }
 
-    const lowStockThresholdCheck = validateLowStockThreshold(lowStockThreshold);
+    const lowStockThresholdCheck = validateLowStockThreshold(String(lowStockThreshold));
     if(!lowStockThresholdCheck.isValid) {
         return lowStockThresholdCheck.error ?? "Invalid low stock threshold";
     }

@@ -22,10 +22,10 @@ export type Validation = {
  * }
  */
 export function useFormInput(
-    formServiceMethod: (initialValue: string | number) => Validation,
-    initialState : string | number = ""
+    formServiceMethod: (initialValue: string) => Validation,
+    initialState : string  = ""
 ) {
-    const [ inputValue, setValue ] = useState<string | number>(initialState);
+    const [ inputValue, setValue ] = useState<string>(initialState);
     const [ error, setError ] = useState<string | null>(null);
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
