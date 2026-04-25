@@ -118,12 +118,12 @@ export default function ProfilePage() {
                         className="profile-input"
                         value={tempData.locationId ?? ""}
                         onChange={(e) => onChange('locationId', e.target.value)}
-                      >
                         <option value="">Select a location</option>
                         <option value="1">Warehouse A</option>
                         <option value="2">Warehouse B</option>
                         <option value="3">Warehouse C</option>
                         <option value="4">Warehouse D</option>
+
                       </select>
                     ) : (
                       "Not set"

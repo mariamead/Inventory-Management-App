@@ -17,6 +17,7 @@ const profileSelect = {
             name: true
         }
     }
+
 };
 
 // Map to front end profile
